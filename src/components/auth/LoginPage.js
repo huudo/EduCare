@@ -16,13 +16,14 @@ import {
 const BASE_URL = "https://gia-su.com/api";
 const VIP_URL = "https://giasuvip.vn/api";
 const PUSH_ENDPOINT = "https://giasuvip.vn/api/setTokenNotification";
-const background = require('./../../images/background.png') ;
+const background = require('./../../images/backgound.jpg') ;
 const lockIcon = require('./../../images/ic_lock.png');
 const userIcon = require('./../../images/ic_user.png');
 const logoDefault = require('./../../images/logo_blacasa.png');
 
 
-var ACCESS_TOKEN = 'key_access_token';
+var TOKEN_BLACASA = 'key_blacasa_token';
+var IS_LOGIN = 'is_login';
 export default class LoginPage extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +62,7 @@ export default class LoginPage extends Component {
             .then((response) => response.json())
             .then((responseJSON) => {
                 //console.warn(responseJSON);
-                var id_blacasa = responseJSON.uid;
+                var id_blacasa = responseJSON.data.uid;
 
                 var { navigate } = this.props.navigation;
                 access_token = responseJSON.token;
@@ -70,9 +71,8 @@ export default class LoginPage extends Component {
                 };
                  if(access_token !=undefined){
                     try {
-                        AsyncStorage.setItem(ACCESS_TOKEN, JSON.stringify(remomberToken));
+                        AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
                         _loginGiasuvip(id_blacasa);
-                        //navigate('Dashboard');
                       } catch (error) {
                         console.log('AsyncStorage error: ' + error.message);
                       }
@@ -108,7 +108,11 @@ export default class LoginPage extends Component {
     })
       .then((response) => response.json())
       .then((responseJSON) => {
-        console.warn(responseJSON);
+
+        let isLogin = {
+          'access_login' : true
+        };
+        AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })
@@ -125,10 +129,7 @@ export default class LoginPage extends Component {
     let userName = this.state.userName;
     let password = this.state.password;
     var access_token = '';
-
-
     //let postData = "grant_type=password&username=" + userName + "&password=" + password;
-
       fetch(serviceUrl,{
       method: "POST",
       headers: {
@@ -155,7 +156,7 @@ export default class LoginPage extends Component {
             };
              if(access_token !=undefined){
                 try {
-                    AsyncStorage.setItem(ACCESS_TOKEN, JSON.stringify(remomberToken));
+                    AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
                     this._loginGiasuvip(id_blacasa);
 
                   } catch (error) {
@@ -175,30 +176,29 @@ export default class LoginPage extends Component {
   render() {
     return (
       <ImageBackground source={background} style={[styles.container, styles.background]}>
-      <Image  source={logoDefault} style={{width:100,height:80}} />
       <View style={styles.container}>
         <View style={styles.wrapper}>
-          <View style={styles.inputWrap}>
-            <View style={styles.iconWrap}>
-              <Image source={userIcon} resizeMode="contain" style={styles.icon}/>
-            </View>
-            <TextInput  style={styles.input} placeholder="Username" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
+          <View style={styles.about}>
+            <Text style={styles.h1}>Sign In</Text>
+            <Text style={styles.textColor}>Quản lý học tập và chia sẻ kiến thức</Text>
           </View>
-          <View style={styles.inputWrap}>
-            <View style={styles.iconWrap}>
-            <Image source={lockIcon} resizeMode="contain" style={styles.icon}/>
-            </View>
-            <TextInput style={styles.input} placeholder="Password" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
-          </View>
+          <View style={styles.groupInput} >
 
-          <TouchableOpacity activeOpacity={.5} onPress={() => this._loginGiasuvip(139)} keyboardShouldPersistTaps={true} >
-            <View style={styles.button}>
-              <Text style={styles.buttonText}> Login via Google</Text>
+            <View style={styles.inputWrap}>
+              <TextInput  style={styles.input} placeholder="Email or Phone" placeholderTextColor="#2b2b2b" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
             </View>
-          </TouchableOpacity>
+            <View style={styles.inputWrap}>
+              <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
+            </View>
+          </View>
           <TouchableOpacity activeOpacity={.5} onPress={this._onPressLogin.bind(this)} keyboardShouldPersistTaps={true} >
             <View style={styles.button}>
               <Text style={styles.buttonText}> Login</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity activeOpacity={.5} onPress={() => this._loginGiasuvip(139)} keyboardShouldPersistTaps={true} >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}> Login via Google</Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity activeOpacity={.5} onPress={() => navigate('RegisterPage')}>
@@ -227,7 +227,23 @@ const styles = StyleSheet.create({
     height:null,
   },
   wrapper:{
-      paddingHorizontal:15,
+      paddingHorizontal:30,
+  },
+  about:{
+    color:'#fff',
+    marginBottom:50,
+    alignItems:"center"
+  },
+  h1:{
+    fontSize: 30,
+    color:"#000",
+    fontWeight:"bold"
+  },
+  textColor:{
+    color: "#000"
+  },
+  groupInput:{
+    marginBottom:20
   },
   inputWrap:{
       flexDirection:"row",
@@ -236,10 +252,13 @@ const styles = StyleSheet.create({
       backgroundColor:"transparent",
   },
   input:{
-  flex: 1,
-  paddingHorizontal: 5,
-  backgroundColor:'#FFF',
-    },
+    flex: 1,
+    paddingHorizontal: 5,
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderBottomWidth: 1,
+    borderColor: '#444444',
+    color: "#fff"
+  },
   iconWrap:{
   paddingHorizontal:7,
   alignItems: "center",
@@ -251,19 +270,17 @@ const styles = StyleSheet.create({
   height:20,
   },
   button:{
-  backgroundColor:"#d73352",
-  paddingVertical: 8,
-  marginVertical:8,
-  alignItems: "center",
-  justifyContent: "center",
+    backgroundColor:"#d73352",
+    paddingVertical: 8,
+    marginVertical:8,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius:25,
   },
-
-
   buttonText: {
       fontSize: 16,
       color:'#FFFFFF',
       textAlign: 'center',
-
   },
   forgotPasswordText:{
     color:'#FFFFFF',

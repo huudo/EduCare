@@ -9,18 +9,18 @@ export default class Splash extends Component {
  componentWillMount() {
    var pageUrl='LoginPage';
    // Kiểm tra xem đã login chưa
-   // AsyncStorage.getItem('key_access_token').then((value) => {
-   //   let userData = JSON.parse(value);
-   //   if(userData.access_token){
-   //    pageUrl='Dashboard';
-   //   }else{
-   //    pageUrl='LoginPage';
-   //   }
-   // });
+   AsyncStorage.getItem('is_login').then((value) => {
+     let userData = JSON.parse(value);
+     if(userData.access_login){
+      pageUrl='Dashboard';
+     }else{
+      pageUrl='LoginPage';
+     }
+   });
    var { navigate } = this.props.navigation;
      setTimeout(() => {
        navigate (pageUrl, null);
-     }, 3000);
+     }, 1000);
  }
   static navigationOptions = {
    title: 'WelcomePage',
