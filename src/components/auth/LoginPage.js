@@ -113,6 +113,12 @@ export default class LoginPage extends Component {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
+        AsyncStorage.getItem("fcmToken").then((value) => {
+            console.warn("TOKEN DAY",fcmToken);
+        })
+        .then(res => {
+            //do something else
+        });
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })

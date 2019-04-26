@@ -30,7 +30,6 @@ export default class ClassNews extends Component {
 
   }
   componentWillMount() {
-
     let serviceApi =  "https://giasuvip.vn/api/checkLogin";
     fetch(serviceApi,{
       method: "GET",
