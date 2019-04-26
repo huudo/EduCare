@@ -10,9 +10,8 @@ import {
   TouchableHighlight,
   Image,
   ImageBackground,
-  AsyncStorage,
  } from 'react-native';
-
+import AsyncStorage from '@react-native-community/async-storage';
 const BASE_URL = "https://gia-su.com/api";
 const VIP_URL = "https://giasuvip.vn/api";
 const PUSH_ENDPOINT = "https://giasuvip.vn/api/setTokenNotification";

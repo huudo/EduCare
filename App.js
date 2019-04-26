@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {AsyncStorage} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 import Route from './Route';
 import firebase from 'react-native-firebase';
 

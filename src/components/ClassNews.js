@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   ScrollView,
-  AsyncStorage,
   WebView
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 
 export default class ClassNews extends Component {

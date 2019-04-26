@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,AsyncStorage } from 'react-native';
+import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 const background =  require('./../../images/1_Loading.jpg') ;
 export default class Splash extends Component {
   constructor(props) {
