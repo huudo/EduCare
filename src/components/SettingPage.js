@@ -8,13 +8,13 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   ScrollView,
-  AsyncStorage,
-  WebView
 } from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
   _onPressLogout(event){
+    this._deleteTokenFCM();
     let serviceUrl =  BASE_URL + "/account/logout";
     var { navigate } = this.props.navigation;
     fetch(serviceUrl,{
@@ -37,6 +37,29 @@ export default class SettingPage extends Component {
       .catch((error) => {
         console.warn(error);
       });
+  }
+  _deleteTokenFCM(){
+    AsyncStorage.getItem('fcmToken').then((value) => {
+      let serviceUrl =  BASE_URL + "/deleteTokenNotification";
+      fetch(serviceUrl,{
+        method: "POST",
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            token: value
+          }),
+        credentials: "include"
+      })
+        .then((response) => response.json())
+        .then((responseJSON) => {
+
+        })
+        .catch((error) => {
+          console.warn(error);
+        });
+    });
   }
   render(){
     return (

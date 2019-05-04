@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   AsyncStorage,
-  WebView
-} from 'react-native';
 
+} from 'react-native';
+import { WebView } from 'react-native-webview';
 import {
   createStackNavigator,
   createAppContainer,
@@ -37,26 +37,54 @@ export default class Route extends React.Component{
     );
   }
 }
+
 class Profile extends Component{
   render(){
     return (
+      <View style={[styles.container]}>
+        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('Feed')} />
+      </View>
+    );
+  }
+}
+const Feed = props=>(
+  <View style={[styles.container]}>
+    <Text>Feed</Text>
+  </View>
+);
+const ProfileFeed = createStackNavigator({
+  Profile: {screen:Profile},
+  Feed: {screen:Feed}
+});
+class EmptyPage extends Component{
+  render(){
+    const { navigation } = this.props;
+    const urlNext = navigation.getParam('urlNext', 'https://google.com');
+
+    return (
       <WebView
-          source={{uri: 'https://gia-su.com'}}
+          source={{uri: urlNext }}
           scalesPageToFit={false}
           style={{flex: 1}}
+          startInLoadingState={false}
         />
     );
   }
 }
+const ClassNavigator = createStackNavigator({
+  ClassNews: {screen:ClassNews},
+  EmptyPage: {screen:EmptyPage}
+});
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    ClassNews,
-    Profile,
+    ClassNavigator,
+    ProfileFeed,
     Settings
   },{
     navigationOptions:({navigation}) =>{
       const {routeName} = navigation.state.routes[navigation.state.index];
       return {
+        header:null,
         headerTitle: routeName
       }
     }

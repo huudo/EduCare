@@ -12,6 +12,7 @@ import {
   ImageBackground,
  } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import firebase from 'react-native-firebase';
 const BASE_URL = "https://gia-su.com/api";
 const VIP_URL = "https://giasuvip.vn/api";
 const PUSH_ENDPOINT = "https://giasuvip.vn/api/setTokenNotification";
@@ -34,6 +35,60 @@ export default class LoginPage extends Component {
   }
   componentWillMount() {
 
+  }
+  //1
+  async checkPermission() {
+    const enabled = await firebase.messaging().hasPermission();
+    if (enabled) {
+        this.getToken();
+    } else {
+        this.requestPermission();
+    }
+  }
+  //3
+  async getToken() {
+    let fcmToken = await AsyncStorage.getItem('fcmToken');
+    if (!fcmToken) {
+        fcmToken = await firebase.messaging().getToken();
+        if (fcmToken) {
+            // user has a device token
+            await AsyncStorage.setItem('fcmToken', fcmToken);
+        }
+    }
+    this._registerToken(fcmToken);
+    console.warn('RUN',fcmToken);
+  }
+    //2
+  async requestPermission() {
+    try {
+        await firebase.messaging().requestPermission();
+        // User has authorised
+        this.getToken();
+    } catch (error) {
+        // User has rejected permissions
+        console.warn('DIS RUN rejected');
+    }
+  }
+  async _registerToken(fcmToken){
+    let serviceUrl = VIP_URL + "/setTokenNotification";
+    await fetch(serviceUrl,{
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+      body: JSON.stringify({
+          token: fcmToken
+        }),
+      credentials: "include"
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        //console.warn(responseJSON);
+      })
+      .catch((error) => {
+        //console.warn(error);
+      });
   }
   _onPressLoginGoogle = async () => {
       try {
@@ -107,17 +162,12 @@ export default class LoginPage extends Component {
     })
       .then((response) => response.json())
       .then((responseJSON) => {
-
+        this.checkPermission();
         let isLogin = {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
-        AsyncStorage.getItem("fcmToken").then((value) => {
-            console.warn("TOKEN DAY",fcmToken);
-        })
-        .then(res => {
-            //do something else
-        });
+
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })

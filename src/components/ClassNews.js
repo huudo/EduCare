@@ -8,12 +8,18 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   ScrollView,
-  WebView
+
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 
 export default class ClassNews extends Component {
+  onMessage(m){
+    url = m.nativeEvent.data;
+    var { navigate } = this.props.navigation;
+    navigate('EmptyPage',{urlNext: url});
+  }
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
     let tabBarLabel = 'News';
@@ -30,24 +36,6 @@ export default class ClassNews extends Component {
 
   }
   componentWillMount() {
-    let serviceApi =  "https://giasuvip.vn/api/checkLogin";
-    fetch(serviceApi,{
-      method: "GET",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include'
-    })
-      .then((response) => response.json())
-      .then((responseJSON) => {
-
-          console.warn(serviceApi,responseJSON);
-      })
-      .catch((error) => {
-        console.warn(error);
-      });
-
   }
 
   render() {
@@ -56,6 +44,13 @@ export default class ClassNews extends Component {
           source={{uri: 'https://giasuvip.vn'}}
           scalesPageToFit={false}
           style={{flex: 1}}
+          startInLoadingState={false}
+          //onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
+          //onNavigationStateChange={this.navigationStateChangedHandler}
+          onMessage={m => this.onMessage(m)}
+          ref={c => {
+            this.WebView = c;
+          }}
         />
     );
   }
