@@ -13,7 +13,15 @@ export default class Splash extends Component {
    AsyncStorage.getItem('is_login').then((value) => {
      let userData = JSON.parse(value);
      if(userData.access_login){
-      pageUrl='Dashboard';
+        AsyncStorage.getItem('push_screen').then((key) => {
+          let appScreen = JSON.parse(key);
+          if(appScreen){
+            pageUrl=appScreen.screen;
+            console.warn("PUSH SCREEN",pageUrl);
+          }else{
+            pageUrl='Dashboard';
+          }
+        });
      }else{
       pageUrl='LoginPage';
      }

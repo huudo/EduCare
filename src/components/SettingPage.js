@@ -13,6 +13,17 @@ import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    let tabBarLabel = 'Setting';
+    let tabBarIcon = () => (
+      <Image
+        source={require('./../../images/new.png')}
+        style={{ width: 26, height: 26 }}
+      />
+    );
+    return { tabBarLabel, tabBarIcon };
+  }
   _onPressLogout(event){
     this._deleteTokenFCM();
     let serviceUrl =  BASE_URL + "/account/logout";

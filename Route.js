@@ -71,13 +71,15 @@ class EmptyPage extends Component{
     );
   }
 }
-const ClassNavigator = createStackNavigator({
-  ClassNews: {screen:ClassNews},
-  EmptyPage: {screen:EmptyPage}
-});
+// const ClassNavigator = createStackNavigator({
+//
+//   ClassNews: {screen:ClassNews},
+//   EmptyPage: {screen:EmptyPage},
+//
+// });
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    ClassNavigator,
+    ClassNews,
     ProfileFeed,
     Settings
   },{
@@ -110,7 +112,8 @@ const AppDrawerNavigator = createDrawerNavigator({
 const AppSwitchNavigator = createSwitchNavigator({
   Splash: {screen: Splash},
   LoginPage: {screen: LoginPage},
-  Dashboard: {screen: AppDrawerNavigator}
+  Dashboard: {screen: AppDrawerNavigator},
+  EmptyPage: {screen: EmptyPage}
 });
 
 const AppContainer =  createAppContainer(AppSwitchNavigator);

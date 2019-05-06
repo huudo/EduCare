@@ -15,6 +15,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 
 export default class ClassNews extends Component {
+
   onMessage(m){
     url = m.nativeEvent.data;
     var { navigate } = this.props.navigation;
@@ -22,14 +23,15 @@ export default class ClassNews extends Component {
   }
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
-    let tabBarLabel = 'News';
+    let tabBarLabel = 'Home';
     let tabBarIcon = () => (
       <Image
         source={require('./../../images/homeIcon.png')}
         style={{ width: 26, height: 26 }}
       />
     );
-    return { tabBarLabel, tabBarIcon };
+    let title = 'Home';
+    return { tabBarLabel, tabBarIcon,title};
   }
   constructor(props) {
     super(props);
