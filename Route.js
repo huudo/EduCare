@@ -11,6 +11,7 @@ import {
 
 } from 'react-native';
 import { WebView } from 'react-native-webview';
+import { Icon } from 'react-native-elements'
 import {
   createStackNavigator,
   createAppContainer,
@@ -31,6 +32,9 @@ var ACCESS_TOKEN = 'key_access_token';
 
 var access_token = '';
 export default class Route extends React.Component{
+  componentWillMount(){
+    
+  }
   render(){
     return (
       <AppContainer />
@@ -38,11 +42,11 @@ export default class Route extends React.Component{
   }
 }
 
-class Profile extends Component{
+class ProfilePage extends Component{
   render(){
     return (
       <View style={[styles.container]}>
-        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('Feed')} />
+        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('Detail')} />
       </View>
     );
   }
@@ -52,10 +56,6 @@ const Feed = props=>(
     <Text>Feed</Text>
   </View>
 );
-const ProfileFeed = createStackNavigator({
-  Profile: {screen:Profile},
-  Feed: {screen:Feed}
-});
 class EmptyPage extends Component{
   render(){
     const { navigation } = this.props;
@@ -71,35 +71,94 @@ class EmptyPage extends Component{
     );
   }
 }
-// const ClassNavigator = createStackNavigator({
-//
-//   ClassNews: {screen:ClassNews},
-//   EmptyPage: {screen:EmptyPage},
-//
-// });
+const DetailPage = props => (
+  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <Text>Detail</Text>
+  </View>
+);
+const Class = createStackNavigator({
+  ClassPage: {
+    screen: ClassNews,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: 'Class',
+        headerLeft: (
+          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
+        )
+      };
+    }
+  }
+});
+const Profile = createStackNavigator({
+    ProfilePage: {
+      screen: ProfilePage,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle: 'Profile',
+          headerLeft: (
+            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
+          )
+        };
+      }
+    },
+    Detail: {
+      screen: DetailPage
+    }
+  },
+  {
+    defaultNavigationOptions: {
+      gesturesEnabled: false
+    }
+  }
+);
+const SettingsStack = createStackNavigator({
+  Settings: {
+    screen: Settings,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: 'Settings',
+        headerLeft: (
+          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
+        )
+      };
+    }
+  }
+});
 const DashboardTabNavigator = createBottomTabNavigator(
   {
-    ClassNews,
-    ProfileFeed,
-    Settings
+    Class,
+    Profile,
+    SettingsStack
   },{
-    navigationOptions:({navigation}) =>{
-      const {routeName} = navigation.state.routes[navigation.state.index];
-      return {
-        header:null,
-        headerTitle: routeName
-      }
-    }
+    defaultNavigationOptions: ({ navigation }) => ({
+      tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        const { routeName } = navigation.state;
+        if (routeName === 'Class') {
+          return (
+            <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home" size={20} />
+          );
+        } else {
+          return (
+            <Icon style={{ paddingLeft: 10 }} color= {tintColor} name="notifications" size={20} />
+          );
+        }
+      },
+    }),
+    tabBarOptions: {
+      activeTintColor: '#FF6F00',
+      inactiveTintColor: '#263238',
+    },
   }
 );
 const DashboardStackNavigator = createStackNavigator(
   {
     DashboardTabNavigator: DashboardTabNavigator
-  },{
-    defaultNavigationOptions: ({navigation}) => {
+  },
+  {
+    defaultNavigationOptions: ({ navigation }) => {
       return {
-        headerLeft: <Text onPress={() => navigation.openDrawer()}>Menu</Text>
-      }
+        header: null
+      };
     }
   }
 );
@@ -117,7 +176,6 @@ const AppSwitchNavigator = createSwitchNavigator({
 });
 
 const AppContainer =  createAppContainer(AppSwitchNavigator);
-
 const styles = StyleSheet.create({
   container:{
     flex: 1,

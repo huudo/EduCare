@@ -21,18 +21,10 @@ export default class ClassNews extends Component {
     var { navigate } = this.props.navigation;
     navigate('EmptyPage',{urlNext: url});
   }
-  static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    let tabBarLabel = 'Home';
-    let tabBarIcon = () => (
-      <Image
-        source={require('./../../images/homeIcon.png')}
-        style={{ width: 26, height: 26 }}
-      />
-    );
-    let title = 'Home';
-    return { tabBarLabel, tabBarIcon,title};
-  }
+  static navigationOptions =
+    {
+      title: 'Home',
+    };
   constructor(props) {
     super(props);
 
