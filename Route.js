@@ -21,7 +21,7 @@ import {
 } from 'react-navigation';
 import Login from './src/components/HomeComponent';
 import Dashboard from './src/components/PromotionComponent';
-import TransactionHistoryComponent from './src/components/TransactionHistoryComponent';
+import HomePage from './src/components/HomePage';
 import MyWalletComponent from './src/components/MyWalletComponent';
 import WelcomePage from './src/components/WelcomePage';
 import Splash from './src/components/Splash';
@@ -33,7 +33,7 @@ var ACCESS_TOKEN = 'key_access_token';
 var access_token = '';
 export default class Route extends React.Component{
   componentWillMount(){
-    
+
   }
   render(){
     return (
@@ -76,6 +76,20 @@ const DetailPage = props => (
     <Text>Detail</Text>
   </View>
 );
+
+const Home = createStackNavigator({
+  HomePage: {
+    screen: HomePage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: 'Trang chủ',
+        headerLeft: (
+          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
+        )
+      };
+    }
+  }
+});
 const Class = createStackNavigator({
   ClassPage: {
     screen: ClassNews,
@@ -126,14 +140,32 @@ const SettingsStack = createStackNavigator({
 });
 const DashboardTabNavigator = createBottomTabNavigator(
   {
+    Home,
     Class,
     Profile,
     SettingsStack
   },{
     defaultNavigationOptions: ({ navigation }) => ({
+      tabBarLabel:() =>{
+        const { routeName } = navigation.state;
+        var namePage = '';
+        switch (routeName) {
+          case 'Home':
+            namePage = 'Trang chủ';
+            break;
+          case 'Class':
+            namePage = 'Học';
+            break;
+          default:
+            namePage = 'Page'
+
+        }
+
+        return <Text style={{textAlign:'center',fontSize:10,paddingBottom:5}}>{namePage}</Text>;
+      },
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        if (routeName === 'Class') {
+        if (routeName === 'Home') {
           return (
             <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home" size={20} />
           );
@@ -145,6 +177,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
       },
     }),
     tabBarOptions: {
+      showLabel: true,
       activeTintColor: '#FF6F00',
       inactiveTintColor: '#263238',
     },

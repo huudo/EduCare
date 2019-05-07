@@ -11,6 +11,7 @@ import {
   Image,
   ImageBackground,
  } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 const BASE_URL = "https://gia-su.com/api";
@@ -230,13 +231,22 @@ export default class LoginPage extends Component {
 
   render() {
     return (
+
       <ImageBackground source={background} style={[styles.container, styles.background]}>
+
       <View style={styles.container}>
         <View style={styles.wrapper}>
           <View style={styles.about}>
             <Text style={styles.h1}>Sign In</Text>
             <Text style={styles.textColor}>Quản lý học tập và chia sẻ kiến thức</Text>
           </View>
+          <KeyboardAwareScrollView
+              automaticallyAdjustContentInsets={false}
+               keyboardShouldPersistTaps='always'
+               scrollEventThrottle={10}
+               extraHeight={250}
+               resetScrollToCoords={{x: 0, y: 0}}
+          >
           <View style={styles.groupInput} >
 
             <View style={styles.inputWrap}>
@@ -246,6 +256,7 @@ export default class LoginPage extends Component {
               <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
             </View>
           </View>
+
           <TouchableOpacity activeOpacity={.5} onPress={this._onPressLogin.bind(this)} keyboardShouldPersistTaps={true} >
             <View style={styles.button}>
               <Text style={styles.buttonText}> Login</Text>
@@ -266,16 +277,19 @@ export default class LoginPage extends Component {
               <Text style={styles.buttonText}> Sign Up</Text>
             </View>
           </TouchableOpacity>
+          </KeyboardAwareScrollView>
         </View>
+
       </View>
       </ImageBackground>
+
     );
   }
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent:'center',
+    justifyContent:'center'
   },
   background:{
     width: null,
