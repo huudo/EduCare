@@ -12,7 +12,7 @@ export default class Splash extends Component {
    // Kiểm tra xem đã login chưa
    AsyncStorage.getItem('is_login').then((value) => {
      let userData = JSON.parse(value);
-     if(userData.access_login){
+     if(userData){
         AsyncStorage.getItem('push_screen').then((key) => {
           let appScreen = JSON.parse(key);
           if(appScreen){

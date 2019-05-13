@@ -57,7 +57,7 @@ export default class LoginPage extends Component {
         }
     }
     this._registerToken(fcmToken);
-    console.warn('RUN',fcmToken);
+    //console.warn('RUN',fcmToken);
   }
     //2
   async requestPermission() {
@@ -88,7 +88,7 @@ export default class LoginPage extends Component {
         //console.warn(responseJSON);
       })
       .catch((error) => {
-        //console.warn(error);
+        console.warn(error);
       });
   }
   _onPressLoginGoogle = async () => {

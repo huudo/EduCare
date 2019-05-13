@@ -11,7 +11,7 @@ import {
 
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Icon } from 'react-native-elements'
+import { Icon } from 'react-native-elements';
 import {
   createStackNavigator,
   createAppContainer,
@@ -46,7 +46,7 @@ class ProfilePage extends Component{
   render(){
     return (
       <View style={[styles.container]}>
-        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('Detail')} />
+        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('ChildScreen')} />
       </View>
     );
   }
@@ -60,7 +60,11 @@ class EmptyPage extends Component{
   render(){
     const { navigation } = this.props;
     const urlNext = navigation.getParam('urlNext', 'https://google.com');
-
+    navigationOptions =
+    {
+      title: 'Home',
+      headerTitle:'CHILD SCREEN'
+    };
     return (
       <WebView
           source={{uri: urlNext }}
@@ -76,7 +80,21 @@ const DetailPage = props => (
     <Text>Detail</Text>
   </View>
 );
+class ChildScreen extends Component{
+  render(){
+    const { navigation } = this.props;
+    const urlNext = navigation.getParam('urlNext', 'https://google.com');
 
+    return (
+      <WebView
+          source={{uri: urlNext }}
+          scalesPageToFit={false}
+          style={{flex: 1}}
+          startInLoadingState={false}
+        />
+    );
+  }
+}
 const Home = createStackNavigator({
   HomePage: {
     screen: HomePage,
@@ -114,28 +132,12 @@ const Profile = createStackNavigator({
           )
         };
       }
-    },
-    Detail: {
-      screen: DetailPage
-    }
-  },
-  {
-    defaultNavigationOptions: {
-      gesturesEnabled: false
     }
   }
 );
 const SettingsStack = createStackNavigator({
   Settings: {
-    screen: Settings,
-    navigationOptions: ({ navigation }) => {
-      return {
-        headerTitle: 'Settings',
-        headerLeft: (
-          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
-        )
-      };
-    }
+    screen: Settings
   }
 });
 const DashboardTabNavigator = createBottomTabNavigator(
@@ -158,7 +160,6 @@ const DashboardTabNavigator = createBottomTabNavigator(
             break;
           default:
             namePage = 'Page'
-
         }
 
         return <Text style={{textAlign:'center',fontSize:10,paddingBottom:5}}>{namePage}</Text>;
@@ -185,12 +186,29 @@ const DashboardTabNavigator = createBottomTabNavigator(
 );
 const DashboardStackNavigator = createStackNavigator(
   {
-    DashboardTabNavigator: DashboardTabNavigator
+    DashboardTabNavigator: {
+      screen:DashboardTabNavigator,
+      navigationOptions: ({ navigation }) => {
+        return {
+          header:null
+        };
+      }
+
+    },
+    ChildScreen: {
+      screen: ChildScreen,
+      navigationOptions: ({ navigation }) => {
+        return {
+          headerTitle:'Child Screen'
+        };
+      }
+    }
   },
   {
     defaultNavigationOptions: ({ navigation }) => {
       return {
-        header: null
+        gesturesEnabled: false,
+        //header: null
       };
     }
   }

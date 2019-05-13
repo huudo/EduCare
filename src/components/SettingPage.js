@@ -10,22 +10,25 @@ import {
   ScrollView,
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
+import { WebView } from 'react-native-webview';
+import { Icon } from 'react-native-elements';
 var ACCESS_TOKEN = 'key_access_token';
 const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { params = {} } = navigation.state;
-    let tabBarLabel = 'Setting';
-    let tabBarIcon = () => (
-      <Image
-        source={require('./../../images/new.png')}
-        style={{ width: 26, height: 26 }}
-      />
-    );
-    return { tabBarLabel, tabBarIcon };
+    //const { params = {} } = navigation.state
+    return {
+      headerTitle: 'Settings',
+      headerRight: (
+        <Icon style={{ paddingLeft: 10 }} onPress={navigation.getParam('handleLogout')} name="refresh" size={30} />
+      )
+    };
+  };
+  componentWillMount () {
+    this.props.navigation.setParams({ handleLogout: this._onPressLogout })
   }
-  _onPressLogout(event){
-    this._deleteTokenFCM();
+  _onPressLogout = ()=>{
+
     let serviceUrl =  BASE_URL + "/account/logout";
     var { navigate } = this.props.navigation;
     fetch(serviceUrl,{
@@ -41,18 +44,19 @@ export default class SettingPage extends Component {
         AsyncStorage.clear();
         var RCTNetworking = require('RCTNetworking');
         RCTNetworking.clearCookies(() => {});
+        this._deleteTokenFCM();
         var pageUrl='LoginPage';
         var { navigate } = this.props.navigation;
         navigate(pageUrl);
       })
       .catch((error) => {
-        console.warn(error);
+        console.warn("error LOGOUT");
       });
   }
   _deleteTokenFCM(){
     AsyncStorage.getItem('fcmToken').then((value) => {
-      let serviceUrl =  BASE_URL + "/deleteTokenNotification";
-      fetch(serviceUrl,{
+    let serviceUrl =  BASE_URL + "/deleteTokenNotification";
+    fetch(serviceUrl,{
         method: "POST",
         headers: {
           'Accept': 'application/json',
@@ -65,22 +69,28 @@ export default class SettingPage extends Component {
       })
         .then((response) => response.json())
         .then((responseJSON) => {
-
+          //console.warn(responseJSON);
         })
         .catch((error) => {
-          console.warn(error);
+          console.warn("error");
         });
     });
   }
+
   render(){
     return (
-      <View style={[styles.container]}>
-        <TouchableOpacity activeOpacity={.5} onPress={() => this._onPressLogout(this)} keyboardShouldPersistTaps={true}>
-          <View style={styles.button}>
-            <Text style={styles.buttonText}> Logout</Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+      <WebView
+          source={{uri: 'https://giasuvip.vn/user-profile'}}
+          scalesPageToFit={false}
+          style={{flex: 1}}
+          startInLoadingState={false}
+          //onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
+          //onNavigationStateChange={this.navigationStateChangedHandler}
+          onMessage={m => this.onMessage(m)}
+          ref={c => {
+            this.WebView = c;
+          }}
+      />
     );
   }
 }
