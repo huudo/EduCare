@@ -17,10 +17,10 @@ var ACCESS_TOKEN = 'key_access_token';
 export default class ClassNews extends Component {
 
   onMessage(m){
-    // url = m.nativeEvent.data;
-    alert(m.nativeEvent.data);
-    // var { navigate } = this.props.navigation;
-    // navigate('EmptyPage',{urlNext: url});
+    url = m.nativeEvent.data;
+
+    var { navigate } = this.props.navigation;
+    navigate('EmptyPage',{urlNext: url});
   }
   static navigationOptions =
     {
@@ -35,7 +35,7 @@ export default class ClassNews extends Component {
   render() {
     return (
       <WebView
-          source={{uri: 'https://giasuvip.vn/class-detail'}}
+          source={{uri: 'https://www.giasuvip.vn/?hybrid=mobile'}}
           scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}

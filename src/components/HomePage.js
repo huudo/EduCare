@@ -14,21 +14,22 @@ import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 
 export default class HomePage extends Component {
-
+  constructor(props) {
+    super(props);
+    this.webView = null;
+  }
   onMessage(m){
+    //console.warn("RUN 2");
     url = m.nativeEvent.data;
     var { navigate } = this.props.navigation;
-    navigate('EmptyPage',{urlNext: url});
+    navigate('ChildScreen',{urlNext: url});
   }
   static navigationOptions =
     {
       title: 'Trang chủ'
 
     };
-  constructor(props) {
-    super(props);
 
-  }
   componentWillMount() {
   }
 
@@ -41,7 +42,7 @@ export default class HomePage extends Component {
           startInLoadingState={false}
           //onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
           //onNavigationStateChange={this.navigationStateChangedHandler}
-          onMessage={m => this.onMessage(m)}
+          onMessage={this.onMessage.bind(this)}
           ref={c => {
             this.WebView = c;
           }}
