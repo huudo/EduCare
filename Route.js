@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   TouchableHighlight,
   AsyncStorage,
-
+  Alert
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { Icon } from 'react-native-elements';
@@ -36,6 +36,7 @@ export default class Route extends React.Component{
   componentWillMount(){
 
   }
+
   render(){
     return (
       <AppContainer />

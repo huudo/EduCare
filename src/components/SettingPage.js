@@ -80,7 +80,7 @@ export default class SettingPage extends Component {
   render(){
     return (
       <WebView
-          source={{uri: 'https://giasuvip.vn/user-profile'}}
+          source={{uri: 'https://giasuvip.vn/profile?hybrid=mobile'}}
           scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}

@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground } from 'react-native';
+import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Alert } from 'react-native';
+import firebase from 'react-native-firebase';
+// import BadgeNumberAndroid from 'react-native-shortcut-badger';
+import type  { Notification ,NotificationOpen  } from 'react-native-firebase';
 import AsyncStorage from '@react-native-community/async-storage';
 const background =  require('./../../images/1_Loading.jpg') ;
 export default class Splash extends Component {
   constructor(props) {
-  super(props);
- }
+    super(props);
+  }
 
- componentWillMount() {
+  componentWillMount() {
    var pageUrl='LoginPage';
    // Kiểm tra xem đã login chưa
    AsyncStorage.getItem('is_login').then((value) => {
@@ -31,7 +34,56 @@ export default class Splash extends Component {
        navigate (pageUrl, null);
      }, 1000);
  }
-  static navigationOptions = {
+ async componentDidMount() {
+   this.createNotificationListeners(); //add this line
+ }
+ componentWillUnmount() {
+   this.notificationListener();
+   this.notificationOpenedListener();
+ }
+ async createNotificationListeners() {
+   /*
+   * Triggered when a particular notification has been received in foreground
+   * */
+   this.notificationListener = firebase.notifications().onNotification((notification) => {
+       const { title, body } = notification;
+       this.showAlert(title, body);
+   });
+
+   /*
+   * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
+   * */
+   this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
+       const { title, body } = notificationOpen.notification;
+       this.showAlert(title, body);
+   });
+
+   /*
+   * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
+   * */
+   const notificationOpen = await firebase.notifications().getInitialNotification();
+   if (notificationOpen) {
+       const { title, body } = notificationOpen.notification;
+       this.showAlert(title, body);
+   }
+   /*
+   * Triggered for data only payload in foreground
+   * */
+   this.messageListener = firebase.messaging().onMessage((message) => {
+     //process data message
+     console.log(JSON.stringify(message));
+   });
+ }
+ showAlert(title, body) {
+   Alert.alert(
+     title, body,
+     [
+         { text: 'OK', onPress: () => this.props.navigation.navigate('ChildScreen') },
+     ],
+     { cancelable: false },
+   );
+ }
+static navigationOptions = {
    title: 'WelcomePage',
     header: null,
  };

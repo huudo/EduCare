@@ -35,7 +35,7 @@ export default class HomePage extends Component {
   render() {
     return (
       <WebView
-          source={{uri: 'https://giasuvip.vn'}}
+          source={{uri: 'https://giasuvip.vn?hybrid=mobile'}}
           scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}
