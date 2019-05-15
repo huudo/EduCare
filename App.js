@@ -2,49 +2,73 @@ import React, { Component } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import Route from './Route';
 import firebase from 'react-native-firebase';
+// import BadgeNumberAndroid from 'react-native-shortcut-badger';
 import type  { Notification ,NotificationOpen  } from 'react-native-firebase';
 
 var access_token = '';
 export default class App extends React.Component{
-  componentWillMount() {
-      this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
-          // Process your notification as required
-          // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
-          console.warn("RECIVE");
-      });
-      this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
-          // Process your notification as required
-          console.warn("RECIVE 11");
-      });
-      this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
-          // Get the action triggered by the notification being opened
-          const action = notificationOpen.action;
-          // Get information about the notification that was opened
-          const notification: Notification = notificationOpen.notification;
-      });
-      firebase.notifications().getInitialNotification()
-      .then((notificationOpen: NotificationOpen) => {
+  async componentDidMount() {
+    const notificationOpen: NotificationOpen = await firebase.notifications().getInitialNotification();
         if (notificationOpen) {
-          // App was opened by a notification
-          // Get the action triggered by the notification being opened
-
-          const action = notificationOpen.action;
-          // Get information about the notification that was opened
-          const notification: Notification = notificationOpen.notification._data.message;
-          const screen =  JSON.parse(notification);
-          let pushScreen = {
-            'screen' : screen.screen
-          };
-          AsyncStorage.getItem('push_screen').then((key) => {
-            let appS = JSON.parse(key);
-            if(appS){
-              AsyncStorage.removeItem('push_screen');
-            }
-          });
-          AsyncStorage.setItem('push_screen', JSON.stringify(pushScreen));
-          console.warn("RUN",screen.screen);
+            const action = notificationOpen.action;
+            const notification: Notification = notificationOpen.notification;
+            var seen = [];
+            alert(JSON.stringify(notification.data, function(key, val) {
+                if (val != null && typeof val == "object") {
+                    if (seen.indexOf(val) >= 0) {
+                        return;
+                    }
+                    seen.push(val);
+                }
+                return val;
+            }));
         }
-      });
+        const channel = new firebase.notifications.Android.Channel('test-channel', 'Test Channel', firebase.notifications.Android.Importance.Max)
+                .setDescription('My apps test channel');
+        // Create the channel
+        firebase.notifications().android.createChannel(channel);
+        this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+            // Process your notification as required
+            // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+            notification
+                .android.setChannelId('test-channel')
+                .android.setSmallIcon('ic_launcher');
+                firebase.notifications().setBadge(5);
+            firebase.notifications().displayNotification(notification);
+        });
+        this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
+            // Process your notification as required
+            notification
+                .android.setChannelId('test-channel')
+                .android.setSmallIcon('ic_launcher');
+                firebase.notifications().setBadge(5);
+            firebase.notifications().displayNotification(notification);
+
+        });
+        this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen: NotificationOpen) => {
+            // Get the action triggered by the notification being opened
+            const action = notificationOpen.action;
+            // Get information about the notification that was opened
+            const notification: Notification = notificationOpen.notification;
+            var seen = [];
+            alert(JSON.stringify(notification.data, function(key, val) {
+                if (val != null && typeof val == "object") {
+                    if (seen.indexOf(val) >= 0) {
+                        return;
+                    }
+                    seen.push(val);
+                }
+                return val;
+            }));
+            firebase.notifications().removeDeliveredNotification(notification.notificationId);
+
+        });
+  }
+  componentWillUnmount() {
+      this.notificationDisplayedListener();
+      this.notificationListener();
+      this.notificationOpenedListener();
+      //BadgeNumberAndroid.setNumber(5);
   }
   render(){
     return (

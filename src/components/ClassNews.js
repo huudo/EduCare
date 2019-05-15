@@ -31,7 +31,6 @@ export default class ClassNews extends Component {
   }
   componentWillMount() {
   }
-
   render() {
     return (
       <WebView

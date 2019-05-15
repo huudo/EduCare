@@ -28,6 +28,7 @@ import Splash from './src/components/Splash';
 import LoginPage from './src/components/auth/LoginPage';
 import ClassNews from './src/components/ClassNews';
 import Settings from './src/components/SettingPage';
+import NotificationPage from './src/components/NotificationComponent';
 var ACCESS_TOKEN = 'key_access_token';
 
 var access_token = '';
@@ -81,10 +82,17 @@ const DetailPage = props => (
   </View>
 );
 class ChildScreen extends Component{
+  state = {
+    title : 'Title'
+  }
+  static navigationOptions =
+  {
+    title: "this.state.title",
+  };
   render(){
     const { navigation } = this.props;
     const urlNext = navigation.getParam('urlNext', 'https://google.com');
-
+    const titleHead = navigation.getParam('titleHead',' ');
     return (
       <WebView
           source={{uri: urlNext }}
@@ -135,6 +143,16 @@ const Profile = createStackNavigator({
     }
   }
 );
+const NotificationStack = createStackNavigator({
+  Notification: {
+    screen: NotificationPage,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: 'Thông báo'
+      };
+    }
+  }
+});
 const SettingsStack = createStackNavigator({
   Settings: {
     screen: Settings
@@ -145,6 +163,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
     Home,
     Class,
     Profile,
+    NotificationStack,
     SettingsStack
   },{
     defaultNavigationOptions: ({ navigation }) => ({
@@ -196,12 +215,7 @@ const DashboardStackNavigator = createStackNavigator(
 
     },
     ChildScreen: {
-      screen: ChildScreen,
-      navigationOptions: ({ navigation }) => {
-        return {
-          headerTitle:'Child Screen'
-        };
-      }
+      screen: ChildScreen
     }
   },
   {
