@@ -122,6 +122,7 @@ const Class = createStackNavigator({
     screen: ClassNews,
     navigationOptions: ({ navigation }) => {
       return {
+        header:null,
         headerTitle: 'Class',
         headerLeft: (
           <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />

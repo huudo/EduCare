@@ -7,40 +7,38 @@ import {
   Button,
   TouchableOpacity,
   TouchableHighlight,
-  ScrollView,
-
+  ScrollView
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import AsyncStorage from '@react-native-community/async-storage';
 var ACCESS_TOKEN = 'key_access_token';
 
 export default class ClassNews extends Component {
-
+  constructor(props) {
+    super(props);
+    this.webView = null;
+  }
   onMessage(m){
     url = m.nativeEvent.data;
 
     var { navigate } = this.props.navigation;
-    navigate('EmptyPage',{urlNext: url});
+    navigate('ChildScreen',{urlNext: url});
   }
   static navigationOptions =
-    {
-      title: 'Home',
-    };
-  constructor(props) {
-    super(props);
-
-  }
+  {
+    title: 'Class',
+  };
   componentWillMount() {
   }
   render() {
     return (
       <WebView
-          source={{uri: 'https://www.giasuvip.vn/?hybrid=mobile'}}
+          source={{uri: 'https://giasuvip.vn?hybrid=mobile'}}
           scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}
-          onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
-          onNavigationStateChange={this.navigationStateChangedHandler}
+          //onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
+          //onNavigationStateChange={this.navigationStateChangedHandler}
           onMessage={m => this.onMessage(m)}
           ref={c => {
             this.WebView = c;
