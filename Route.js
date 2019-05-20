@@ -83,13 +83,14 @@ const DetailPage = props => (
   </View>
 );
 class ChildScreen extends Component{
-  state = {
-    title : 'Title'
-  }
-  static navigationOptions =
-  {
-    title: "this.state.title",
-  };
+
+  static navigationOptions = ({ navigation }) => {
+   const { params } = navigation.state;
+
+   return {
+     title: params.title ? params.title : 'A Nested Details Screen',
+   }
+ };
   render(){
     const { navigation } = this.props;
     const urlNext = navigation.getParam('urlNext', 'https://google.com');

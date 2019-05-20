@@ -22,7 +22,7 @@ export default class HomePage extends Component {
     //console.warn("RUN 2");
     url = m.nativeEvent.data;
     var { navigate } = this.props.navigation;
-    navigate('ChildScreen',{urlNext: url});
+    navigate('ChildScreen',{urlNext: url,title:"Bài viết"});
   }
   static navigationOptions =
     {
