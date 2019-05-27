@@ -15,6 +15,13 @@ import { Icon } from 'react-native-elements';
 var ACCESS_TOKEN = 'key_access_token';
 const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
+  onMessage(m){
+    //console.warn("RUN 2");
+    url = m.nativeEvent.data;
+    console.warn(url);
+    var { navigate } = this.props.navigation;
+    navigate('ChildScreen',{urlNext: url,title:url});
+  }
   static navigationOptions = ({ navigation }) => {
     //const { params = {} } = navigation.state
     return {

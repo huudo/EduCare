@@ -19,13 +19,13 @@ import {
   createSwitchNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
-import Login from './src/components/HomeComponent';
 import Dashboard from './src/components/PromotionComponent';
 import HomePage from './src/components/HomePage';
 import MyWalletComponent from './src/components/MyWalletComponent';
 import WelcomePage from './src/components/WelcomePage';
 import Splash from './src/components/Splash';
 import LoginPage from './src/components/auth/LoginPage';
+import RegisterPage from './src/components/auth/RegisterPage';
 import ClassNews from './src/components/ClassNews';
 import Settings from './src/components/SettingPage';
 import NotificationPage from './src/components/NotificationComponent';
@@ -58,25 +58,6 @@ const Feed = props=>(
     <Text>Feed</Text>
   </View>
 );
-class EmptyPage extends Component{
-  render(){
-    const { navigation } = this.props;
-    const urlNext = navigation.getParam('urlNext', 'https://google.com');
-    navigationOptions =
-    {
-      title: 'Home',
-      headerTitle:'CHILD SCREEN'
-    };
-    return (
-      <WebView
-          source={{uri: urlNext }}
-          scalesPageToFit={false}
-          style={{flex: 1}}
-          startInLoadingState={false}
-        />
-    );
-  }
-}
 const DetailPage = props => (
   <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
     <Text>Detail</Text>
@@ -105,15 +86,29 @@ class ChildScreen extends Component{
     );
   }
 }
+const LoginStack = createStackNavigator({
+    Login : {
+      screen: LoginPage,
+      navigationOptions: {
+  			header: null
+  		}
+    },
+    Register:{
+      screen:RegisterPage,
+      navigationOptions: {
+  			tabBarVisible: false,
+  			headerTransparent: true,
+  			headerTintColor: '#000'
+  		}
+    }
+});
 const Home = createStackNavigator({
   HomePage: {
     screen: HomePage,
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: 'Trang chủ',
-        headerLeft: (
-          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
-        )
+        header:null
       };
     }
   }
@@ -124,10 +119,7 @@ const Class = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         header:null,
-        headerTitle: 'Class',
-        headerLeft: (
-          <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
-        )
+        headerTitle: 'Class'
       };
     }
   }
@@ -138,9 +130,7 @@ const Profile = createStackNavigator({
       navigationOptions: ({ navigation }) => {
         return {
           headerTitle: 'Profile',
-          headerLeft: (
-            <Icon style={{ paddingLeft: 10 }} onPress={() => navigation.openDrawer()} name="menu" size={30} />
-          )
+          header:null
         };
       }
     }
@@ -161,6 +151,7 @@ const SettingsStack = createStackNavigator({
     screen: Settings
   }
 });
+
 const DashboardTabNavigator = createBottomTabNavigator(
   {
     Home,
@@ -170,7 +161,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
     SettingsStack
   },{
     defaultNavigationOptions: ({ navigation }) => ({
-      tabBarLabel:() =>{
+      tabBarLabel:({ focused, horizontal, tintColor }) =>{
         const { routeName } = navigation.state;
         var namePage = '';
         switch (routeName) {
@@ -180,29 +171,60 @@ const DashboardTabNavigator = createBottomTabNavigator(
           case 'Class':
             namePage = 'Học';
             break;
+          case 'Profile':
+            namePage = 'Khám phá';
+            break;
+          case 'NotificationStack':
+            namePage = 'Thông báo';
+            break;
+          case 'SettingsStack':
+            namePage = 'Cài đặt';
+            break;
           default:
             namePage = 'Page'
         }
 
-        return <Text style={{textAlign:'center',fontSize:10,paddingBottom:5}}>{namePage}</Text>;
+        return <Text style={{textAlign:'center',fontSize:10,paddingBottom:5,color: tintColor }}>{namePage}</Text>;
       },
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
         const { routeName } = navigation.state;
-        if (routeName === 'Home') {
+        switch (routeName) {
+          case 'Home':
+            return (
+              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home" size={20} />
+            );
+            break;
+          case 'Class':
+            return (
+                <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="book" size={20} />
+              );
+            break;
+          case 'Profile':
+            return (
+              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="star" size={20} />
+            );
+            break;
+          case 'NotificationStack':
+            return (
+              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="notifications" size={20} />
+            );
+            break;
+          case 'SettingsStack':
+            return (
+              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="settings" size={20} />
+            );
+            break;
+          default:
           return (
-            <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home" size={20} />
-          );
-        } else {
-          return (
-            <Icon style={{ paddingLeft: 10 }} color= {tintColor} name="notifications" size={20} />
+            <Icon style={{ paddingLeft: 10 }} color= {tintColor} name="supervised_user_circle" size={20} />
           );
         }
       },
     }),
     tabBarOptions: {
       showLabel: true,
-      activeTintColor: '#FF6F00',
-      inactiveTintColor: '#263238',
+      activeTintColor: '#03afad',
+      inactiveTintColor: '#5f6063',
     },
   }
 );
@@ -238,9 +260,8 @@ const AppDrawerNavigator = createDrawerNavigator({
 });
 const AppSwitchNavigator = createSwitchNavigator({
   Splash: {screen: Splash},
-  LoginPage: {screen: LoginPage},
-  Dashboard: {screen: AppDrawerNavigator},
-  EmptyPage: {screen: EmptyPage}
+  LoginPage: {screen: LoginStack},
+  Dashboard: {screen: AppDrawerNavigator}
 });
 
 const AppContainer =  createAppContainer(AppSwitchNavigator);

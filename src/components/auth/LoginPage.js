@@ -146,19 +146,15 @@ export default class LoginPage extends Component {
         console.warn("error", e)
       }
   }
-  _loginGiasuvip(uid){
+  _loginGiasuvip(data){
     let serviceUrl = VIP_URL + "/login";
-    let id_blacasa = uid;
-
     fetch(serviceUrl,{
     method: "POST",
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     },
-      body: JSON.stringify({
-          id_blacasa: id_blacasa
-        }),
+      body: JSON.stringify(data),
       credentials: "include"
     })
       .then((response) => response.json())
@@ -202,27 +198,38 @@ export default class LoginPage extends Component {
       })
         .then((response) => response.json())
         .then((responseJSON) => {
-
-            var { navigate } = this.props.navigation;
-            var id_blacasa = responseJSON.data.uid;
-            //console.warn(id_blacasa);
-            access_token = responseJSON.token;
-            let remomberToken = {
-              'access_token' : access_token
-            };
-             if(access_token !=undefined){
-                try {
-                    AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
-                    this._loginGiasuvip(id_blacasa);
-
-                  } catch (error) {
-                    console.log('AsyncStorage error: ' + error.message);
-                  }
-             }
-             else{
-                Alert.alert('Login failure');
-             }
-
+            if(responseJSON.status && responseJSON.status == 'success'){
+              var { navigate } = this.props.navigation;
+              var id_blacasa = responseJSON.data.uid;
+              var dataLogin = {
+                'id_blacasa' : id_blacasa,
+                'full_name': responseJSON.data.field_full_name_value,
+                'userName' : responseJSON.data.name,
+                'password' : password,
+                'email': responseJSON.data.email,
+                'phone': responseJSON.data.field_phone,
+                'address': responseJSON.data.field_address_value
+              };
+              //console.warn(id_blacasa);
+              access_token = responseJSON.token;
+              let remomberToken = {
+                'access_token' : access_token
+              };
+               if(access_token !=undefined){
+                  try {
+                      AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
+                      this._loginGiasuvip(dataLogin);
+                      console.warn(dataLogin);
+                    } catch (error) {
+                      console.log('AsyncStorage error: ' + error.message);
+                    }
+               }
+               else{
+                  Alert.alert('Login failure');
+               }
+            }else{
+              Alert.alert('Login failure');
+            }
         })
         .catch((error) => {
           console.warn(error);
@@ -267,17 +274,16 @@ export default class LoginPage extends Component {
               <Text style={styles.buttonText}> Login via Google</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={.5} onPress={() => navigate('RegisterPage')}>
-            <View >
-            <Text style={styles.forgotPasswordText}>Forgot password?</Text>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity activeOpacity={.5} onPress={this._onPressDashBoard.bind(this)} keyboardShouldPersistTaps={true}>
             <View style={styles.button}>
               <Text style={styles.buttonText}> Sign Up</Text>
             </View>
           </TouchableOpacity>
           </KeyboardAwareScrollView>
+          <View style={styles.textGroup} >
+            <Text style={{paddingRight:20}}>Quyên mật khẩu ?</Text>
+            <Text onPress={() =>this.props.navigation.navigate('Register')} >Đăng ký</Text>
+          </View>
         </View>
 
       </View>
@@ -289,7 +295,13 @@ export default class LoginPage extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:'column',
     justifyContent:'center'
+  },
+  textGroup: {
+    flexDirection: 'row',
+    justifyContent:'center',
+    marginTop:20
   },
   background:{
     width: null,
@@ -326,7 +338,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0)',
     borderBottomWidth: 1,
     borderColor: '#444444',
-    color: "#fff"
+    color: "#2b2b2b"
   },
   iconWrap:{
   paddingHorizontal:7,
