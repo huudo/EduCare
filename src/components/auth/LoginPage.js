@@ -219,7 +219,6 @@ export default class LoginPage extends Component {
                   try {
                       AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
                       this._loginGiasuvip(dataLogin);
-                      console.warn(dataLogin);
                     } catch (error) {
                       console.log('AsyncStorage error: ' + error.message);
                     }
@@ -269,7 +268,7 @@ export default class LoginPage extends Component {
               <Text style={styles.buttonText}> Login</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={.5} onPress={() => this._loginGiasuvip(139)} keyboardShouldPersistTaps={true} >
+          <TouchableOpacity activeOpacity={.5}  keyboardShouldPersistTaps={true} >
             <View style={styles.button}>
               <Text style={styles.buttonText}> Login via Google</Text>
             </View>

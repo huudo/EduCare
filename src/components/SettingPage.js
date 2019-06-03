@@ -48,10 +48,10 @@ export default class SettingPage extends Component {
     })
       .then((response) => response.json())
       .then((responseJSON) => {
+        this._deleteTokenFCM();
         AsyncStorage.clear();
         var RCTNetworking = require('RCTNetworking');
         RCTNetworking.clearCookies(() => {});
-        this._deleteTokenFCM();
         var pageUrl='LoginPage';
         var { navigate } = this.props.navigation;
         navigate(pageUrl);
@@ -62,6 +62,7 @@ export default class SettingPage extends Component {
   }
   _deleteTokenFCM(){
     AsyncStorage.getItem('fcmToken').then((value) => {
+      //console.warn("TOKEN",value);
     let serviceUrl =  BASE_URL + "/deleteTokenNotification";
     fetch(serviceUrl,{
         method: "POST",

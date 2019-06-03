@@ -416,8 +416,8 @@ const styles = StyleSheet.create({
   },
   forgotPasswordText:{
     color:'#FFFFFF',
-       backgroundColor:"transparent",
-         textAlign: 'center',
+    backgroundColor:"transparent",
+    textAlign: 'center',
   },
   welcome: {
     fontSize: 20,

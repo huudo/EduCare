@@ -141,7 +141,10 @@ const NotificationStack = createStackNavigator({
     screen: NotificationPage,
     navigationOptions: ({ navigation }) => {
       return {
-        headerTitle: 'Thông báo'
+        headerTitle: 'Thông báo',
+  			tabBarVisible: false,
+  			headerTransparent: true,
+  			headerTintColor: '#03afad'
       };
     }
   }

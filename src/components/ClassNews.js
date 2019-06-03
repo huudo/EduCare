@@ -33,7 +33,7 @@ export default class ClassNews extends Component {
   render() {
     return (
       <WebView
-          source={{uri: 'https://giasuvip.vn?hybrid=mobile'}}
+          source={{uri: 'https://giasuvip.vn/education-box?hybrid=mobile'}}
           scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}
