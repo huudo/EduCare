@@ -78,8 +78,9 @@ class ChildScreen extends Component{
     const titleHead = navigation.getParam('titleHead',' ');
     return (
       <WebView
+          useWebKit={false}
+          userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
           source={{uri: urlNext }}
-          scalesPageToFit={false}
           style={{flex: 1}}
           startInLoadingState={false}
         />

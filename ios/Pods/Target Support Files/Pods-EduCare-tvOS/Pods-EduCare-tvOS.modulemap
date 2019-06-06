@@ -1,0 +1,6 @@
+framework module Pods_EduCare_tvOS {
+  umbrella header "Pods-EduCare-tvOS-umbrella.h"
+
+  export *
+  module * { export * }
+}

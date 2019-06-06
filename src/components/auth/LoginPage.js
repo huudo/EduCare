@@ -147,6 +147,7 @@ export default class LoginPage extends Component {
       }
   }
   _loginGiasuvip(data){
+    console.warn(data);
     let serviceUrl = VIP_URL + "/login";
     fetch(serviceUrl,{
     method: "POST",
@@ -160,11 +161,12 @@ export default class LoginPage extends Component {
       .then((response) => response.json())
       .then((responseJSON) => {
         this.checkPermission();
+        console.warn(responseJSON);
         let isLogin = {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
-
+        
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })
@@ -218,6 +220,7 @@ export default class LoginPage extends Component {
                if(access_token !=undefined){
                   try {
                       AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
+                      //console.warn(responseJSON);
                       this._loginGiasuvip(dataLogin);
                     } catch (error) {
                       console.log('AsyncStorage error: ' + error.message);
@@ -227,7 +230,7 @@ export default class LoginPage extends Component {
                   Alert.alert('Login failure');
                }
             }else{
-              Alert.alert('Login failure');
+              console.warn(responseJSON);
             }
         })
         .catch((error) => {
