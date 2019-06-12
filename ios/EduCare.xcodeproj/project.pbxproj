@@ -467,7 +467,7 @@
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BA4D678A22A6617600C476B2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		BA919BBA22AF6C5700A31A6E /* EduCare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = EduCare.entitlements; path = EduCare/EduCare.entitlements; sourceTree = "<group>"; };
-		BA919C0B22AF8F2A00A31A6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		BA919C0B22AF8F2A00A31A6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BA919C5B22AF937200A31A6E /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		C0A01AB8B2801E939D3F01F8 /* Pods-EduCare-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-EduCare-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-EduCare-tvOSTests/Pods-EduCare-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C1ABB24A5BB14925B539D10F /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
@@ -635,14 +635,14 @@
 		13B07FAE1A68108700A75B9A /* EduCare */ = {
 			isa = PBXGroup;
 			children = (
-				BA919C0B22AF8F2A00A31A6E /* GoogleService-Info.plist */,
-				BA919BBA22AF6C5700A31A6E /* EduCare.entitlements */,
-				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
+				BA919BBA22AF6C5700A31A6E /* EduCare.entitlements */,
+				BA919C0B22AF8F2A00A31A6E /* GoogleService-Info.plist */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				13B07FB11A68108700A75B9A /* LaunchScreen.xib */,
+				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = EduCare;
