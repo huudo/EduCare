@@ -38,7 +38,7 @@ export default class Splash extends Component {
    this.createNotificationListeners(); //add this line
  }
  componentWillUnmount() {
-   this.notificationListener();
+  //  this.notificationListener();
    this.notificationOpenedListener();
  }
  async createNotificationListeners() {
