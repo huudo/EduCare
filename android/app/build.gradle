@@ -102,7 +102,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.educare"
+        applicationId "com.blacasa.EduCare"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

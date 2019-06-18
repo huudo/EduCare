@@ -1,4 +1,4 @@
-package com.educare;
+package com.blacasa.EduCare;
 
 import android.app.Application;
 
