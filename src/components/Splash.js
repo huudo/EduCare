@@ -34,48 +34,28 @@ export default class Splash extends Component {
        navigate (pageUrl, null);
      }, 1000);
  }
- async componentDidMount() {
-   this.createNotificationListeners(); //add this line
+ 
+ 
+ componentDidMount() {
+
+	 //this.notificationDisplayedListener = firebase.notifications().onNotificationDisplayed((notification: Notification) => {
+		 // Process your notification as required
+		 // ANDROID: Remote notifications do not contain the channel ID. You will have to specify this manually if you'd like to re-display the notification.
+		 // Process your notification as required
+		 //const { title, body } = notification.notification;
+		 //this.showAlert(title, body);
+		 //this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
+		 //});
+	 //this.notificationListener = firebase.notifications().onNotification((notification: Notification) => {
+		 // Process your notification as required
+		 //const { title, body } = notification.notification;
+		 //this.showAlert(title, body);
+		 //this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
+		 //});
  }
  componentWillUnmount() {
-   this.notificationListener();
-   this.notificationOpenedListener();
- }
- async createNotificationListeners() {
-   /*
-   * Triggered when a particular notification has been received in foreground
-   * */
-   this.notificationListener = firebase.notifications().onNotification((notification) => {
-       const { title, body } = notification.notification;
-       //this.showAlert(title, body);
-        this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
-   });
-
-   /*
-   * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
-   * */
-   this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-       const { title, body } = notificationOpen.notification;
-       //this.showAlert(title, body);
-       this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
-   });
-
-   /*
-   * If your app is closed, you can check if it was opened by a notification being clicked / tapped / opened as follows:
-   * */
-   const notificationOpen = await firebase.notifications().getInitialNotification();
-   if (notificationOpen) {
-       const { title, body } = notificationOpen.notification;
-       //this.showAlert(title, body);
-      this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
-   }
-   /*
-   * Triggered for data only payload in foreground
-   * */
-   this.messageListener = firebase.messaging().onMessage((message) => {
-     //process data message
-     console.log(JSON.stringify(message));
-   });
+ //this.notificationDisplayedListener();
+ //this.notificationListener();
  }
  showAlert(title, body) {
    Alert.alert(
@@ -86,7 +66,7 @@ export default class Splash extends Component {
      { cancelable: false },
    );
  }
-static navigationOptions = {
+	static navigationOptions = {
    title: 'WelcomePage',
     header: null,
  };
@@ -97,6 +77,7 @@ static navigationOptions = {
      </ImageBackground>
    );
  }
+ 
 }
 const styles = StyleSheet.create({
   background:{

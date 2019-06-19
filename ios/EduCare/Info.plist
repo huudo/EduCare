@@ -17,7 +17,7 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>1.0.21</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -37,14 +37,20 @@
 			</dict>
 		</dict>
 	</dict>
-	<key>NSLocationAlwaysUsageDescription</key>
-	<string>Program requires GPS to track cars and job orders</string>
+	<key>NSCameraUsageDescription</key>
+	<string>To connect the video call between you and your patient, please allow us access to your camera.</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Program requires GPS to track cars and job orders</string>
+	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Program requires GPS to track cars and job orders</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Program requires GPS to track cars and job orders</string>
 	<key>NSMainNibFile</key>
 	<string>LaunchScreen</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please allow us access to your microphone for the video call.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please allow us access to your photo library so that you can upload any photo from there to us.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>
@@ -81,11 +87,5 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please allow us access to your photo library so that you can upload any photo from there to us.</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>Please allow us access to your microphone for the video call.</string>
-	<key>NSCameraUsageDescription</key>
-	<string>To connect the video call between you and your patient, please allow us access to your camera.</string>
 </dict>
 </plist>
