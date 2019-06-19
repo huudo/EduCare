@@ -10,6 +10,7 @@ import {
   TouchableHighlight,
   Image,
   ImageBackground,
+  Platform
  } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import AsyncStorage from '@react-native-community/async-storage';
@@ -72,6 +73,12 @@ export default class LoginPage extends Component {
   }
   async _registerToken(fcmToken){
     let serviceUrl = VIP_URL + "/setTokenNotification";
+    var device = "";
+    if(Platform.OS === 'ios'){
+      device = "IOS";
+    }else{
+      device = "Android";
+    }
     await fetch(serviceUrl,{
     method: "POST",
     headers: {
@@ -79,7 +86,8 @@ export default class LoginPage extends Component {
       'Content-Type': 'application/json'
     },
       body: JSON.stringify({
-          token: fcmToken
+          token: fcmToken,
+          device: device
         }),
       credentials: "include"
     })
@@ -166,7 +174,7 @@ export default class LoginPage extends Component {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
-        
+
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })
