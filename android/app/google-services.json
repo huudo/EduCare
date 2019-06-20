@@ -8,43 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:951702889970:android:8116006d334ee0e5",
-        "android_client_info": {
-          "package_name": "com.Blacasa.EduCare"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "951702889970-bvkga5o6m41rfameo776mop84hg37ihi.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyAh4plqqC5-9Dj3J70Op9sLaUGDRQJxOtk"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "951702889970-bvkga5o6m41rfameo776mop84hg37ihi.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "951702889970-m9djacor1prt3htqpo679ipa390emjvt.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.blacasa.EduCare",
-                "app_store_id": "1466746334"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:951702889970:android:1860e0ddd8dbb946",
         "android_client_info": {
           "package_name": "com.blacasa.EduCare"

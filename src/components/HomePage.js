@@ -19,16 +19,15 @@ export default class HomePage extends Component {
     this.webView = null;
   }
   onMessage(m){
-    //console.warn("RUN 2");
-    url = m.nativeEvent.data;
-    var { navigate } = this.props.navigation;
-    navigate('ChildScreen',{urlNext: url,title:"Bài viết"});
-  }
-  static navigationOptions =
-    {
-      title: 'Trang chủ'
+    var message = JSON.parse(m.nativeEvent.data);
+    var data = message.message;
 
-    };
+    if(data.type == "openScreen"){
+      var { navigate } = this.props.navigation;
+      this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
+    }
+  }
+
 
   componentWillMount() {
   }

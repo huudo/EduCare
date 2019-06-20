@@ -1,59 +1,48 @@
 import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  Image,
-  StyleSheet,
-  Button,
-  TouchableOpacity,
-  TouchableHighlight,
-  ScrollView
-} from 'react-native';
+import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Alert } from 'react-native';
 import { WebView } from 'react-native-webview';
-import AsyncStorage from '@react-native-community/async-storage';
-var ACCESS_TOKEN = 'key_access_token';
 
-export default class ClassNews extends Component {
+export default class ChildPage extends Component {
   constructor(props) {
     super(props);
     this.webView = null;
   }
+  static navigationOptions = ({ navigation, navigationOptions }) => {
+    const { params } = navigation.state;
+    return {
+     title: params ? params.title : 'A Nested Details Screen'
+    }
+  };
   onMessage(m){
-    // url = m.nativeEvent.data;
-    //
-    // var { navigate } = this.props.navigation;
-    // navigate('ChildScreen',{urlNext: url,title:'Lớp học'});
     var message = JSON.parse(m.nativeEvent.data);
     var data = message.message;
 
     if(data.type == "openScreen"){
       var { navigate } = this.props.navigation;
       this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
-    }
-    if(data == "setTitle"){
-      console.warn(data.title);
+    }else{
+      this.props.navigation.setParams({ title: data.title });
     }
   }
-  static navigationOptions =
-  {
-    title: 'Class',
-  };
-  componentWillMount() {
-  }
-  render() {
+  render(){
+    const { navigation } = this.props;
+    const urlNext = navigation.getParam('urlNext', 'https://google.com');
+    const titleHead = navigation.getParam('titleHead',' ');
     return (
       <WebView
           useWebKit={false}
           userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
-          source={{uri: 'https://giasuvip.vn/education-box?hybrid=mobile'}}
+          source={{uri: urlNext }}
           style={{flex: 1}}
           startInLoadingState={false}
-          onMessage={m => this.onMessage(m)}
+          onMessage={this.onMessage.bind(this)}
           ref={c => {
             this.WebView = c;
           }}
         />
     );
+  }
+  componentWillMount() {
   }
 }
 const styles = StyleSheet.create({

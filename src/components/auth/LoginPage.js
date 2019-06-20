@@ -155,7 +155,6 @@ export default class LoginPage extends Component {
       }
   }
   _loginGiasuvip(data){
-    console.warn(data);
     let serviceUrl = VIP_URL + "/login";
     fetch(serviceUrl,{
     method: "POST",
@@ -169,7 +168,7 @@ export default class LoginPage extends Component {
       .then((response) => response.json())
       .then((responseJSON) => {
         this.checkPermission();
-        console.warn(responseJSON);
+        //console.warn(responseJSON);
         let isLogin = {
           'access_login' : true
         };
@@ -238,7 +237,7 @@ export default class LoginPage extends Component {
                   Alert.alert('Login failure');
                }
             }else{
-              console.warn(responseJSON);
+            //  console.warn(responseJSON);
             }
         })
         .catch((error) => {

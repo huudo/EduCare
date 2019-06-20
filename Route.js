@@ -29,6 +29,7 @@ import RegisterPage from './src/components/auth/RegisterPage';
 import ClassNews from './src/components/ClassNews';
 import Settings from './src/components/SettingPage';
 import NotificationPage from './src/components/NotificationComponent';
+import ChildPage from './src/components/ChildComponent';
 var ACCESS_TOKEN = 'key_access_token';
 
 var access_token = '';
@@ -48,7 +49,12 @@ class ProfilePage extends Component{
   render(){
     return (
       <View style={[styles.container]}>
-        <Button title="Go to Feed" onPress= {()=>this.props.navigation.navigate('ChildScreen')} />
+      <Button
+        title="Go to Details"
+        onPress={() => this.props.navigation.navigate('ChildScreen',{urlNext: 'https://google.com',title:"google"
+            }
+          )}
+      />
       </View>
     );
   }
@@ -58,35 +64,30 @@ const Feed = props=>(
     <Text>Feed</Text>
   </View>
 );
-const DetailPage = props => (
-  <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Text>Detail</Text>
-  </View>
-);
-class ChildScreen extends Component{
-
-  static navigationOptions = ({ navigation }) => {
-   const { params } = navigation.state;
-
-   return {
-     title: params.title ? params.title : 'A Nested Details Screen',
-   }
- };
-  render(){
-    const { navigation } = this.props;
-    const urlNext = navigation.getParam('urlNext', 'https://google.com');
-    const titleHead = navigation.getParam('titleHead',' ');
-    return (
-      <WebView
-          useWebKit={false}
-          userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
-          source={{uri: urlNext }}
-          style={{flex: 1}}
-          startInLoadingState={false}
-        />
-    );
-  }
-}
+// class ChildScreen extends Component{
+//
+//   static navigationOptions = ({ navigation }) => {
+//    const { params } = navigation.state;
+//
+//    return {
+//      title: params.title ? params.title : 'A Nested Details Screen',
+//    }
+//  };
+//   render(){
+//     const { navigation } = this.props;
+//     const urlNext = navigation.getParam('urlNext', 'https://google.com');
+//     const titleHead = navigation.getParam('titleHead',' ');
+//     return (
+//       <WebView
+//           useWebKit={false}
+//           userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
+//           source={{uri: urlNext }}
+//           style={{flex: 1}}
+//           startInLoadingState={false}
+//         />
+//     );
+//   }
+// }
 const LoginStack = createStackNavigator({
     Login : {
       screen: LoginPage,
@@ -109,7 +110,15 @@ const Home = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: 'Trang chủ',
-        header:null
+        headerStyle: {
+          backgroundColor: '#03afad'
+        },
+        headerTitleStyle: {
+            textAlign: 'center',
+            flexGrow:1,
+            alignSelf:'center',
+        },
+        headerTintColor: '#fff'
       };
     }
   }
@@ -119,8 +128,11 @@ const Class = createStackNavigator({
     screen: ClassNews,
     navigationOptions: ({ navigation }) => {
       return {
-        header:null,
-        headerTitle: 'Class'
+        headerTitle: 'Quản lý lớp học',
+        headerStyle: {
+          backgroundColor: '#03afad'
+        },
+        headerTintColor: '#fff'
       };
     }
   }
@@ -130,8 +142,11 @@ const Profile = createStackNavigator({
       screen: ProfilePage,
       navigationOptions: ({ navigation }) => {
         return {
-          headerTitle: 'Profile',
-          header:null
+          headerTitle: 'Khám phá',
+          headerStyle: {
+            backgroundColor: '#03afad'
+          },
+          headerTintColor: '#fff'
         };
       }
     }
@@ -143,16 +158,26 @@ const NotificationStack = createStackNavigator({
     navigationOptions: ({ navigation }) => {
       return {
         headerTitle: 'Thông báo',
-  			tabBarVisible: false,
-  			headerTransparent: true,
-  			headerTintColor: '#03afad'
+        headerStyle: {
+          backgroundColor: '#03afad'
+        },
+        headerTintColor: '#fff'
       };
     }
   }
 });
 const SettingsStack = createStackNavigator({
   Settings: {
-    screen: Settings
+    screen: Settings,
+    navigationOptions: ({ navigation }) => {
+      return {
+        headerTitle: 'Cá nhân',
+        headerStyle: {
+          backgroundColor: '#03afad'
+        },
+        headerTintColor: '#fff'
+      };
+    }
   }
 });
 
@@ -244,7 +269,7 @@ const DashboardStackNavigator = createStackNavigator(
 
     },
     ChildScreen: {
-      screen: ChildScreen
+      screen: ChildPage
     }
   },
   {

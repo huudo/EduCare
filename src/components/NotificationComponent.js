@@ -79,7 +79,7 @@ export default class NotificationComponent extends Component {
   )};
   render() {
     return (
-      <View style={{paddingTop:60, backgroundColor:"#FAFAFA"}}>
+      <View style={{paddingTop:10, backgroundColor:"#FAFAFA"}}>
       <ScrollView refreshControl={
           <RefreshControl
             refreshing={this.state.refreshing}
@@ -97,18 +97,13 @@ const styles = StyleSheet.create({
   card :{
     backgroundColor: '#fff',
     padding: 10,
-    marginBottom:10,
-    marginLeft:10,
-    marginRight:10,
-    borderWidth: 1,
-    borderRadius: 10,
+    marginBottom:5,
+    marginLeft:0,
+    marginRight:0,
+    //borderWidth: 1,
+    // /borderRadius: 10,
     borderColor: '#ddd',
-    borderBottomWidth: 0,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
-    shadowRadius: 2,
-    elevation: 1,
+    borderBottomWidth: 0
   },
   cardTitle:{
     fontSize: 15,
