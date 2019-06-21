@@ -21,11 +21,11 @@ export default class HomePage extends Component {
   onMessage(m){
     var message = JSON.parse(m.nativeEvent.data);
     var data = message.message;
-
+		console.warn(data);
     if(data.type == "openScreen"){
-      var { navigate } = this.props.navigation;
-      this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
-    }
+       var { navigate } = this.props.navigation;
+       this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
+     }
   }
 
 

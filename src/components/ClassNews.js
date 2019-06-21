@@ -19,19 +19,14 @@ export default class ClassNews extends Component {
     this.webView = null;
   }
   onMessage(m){
-    // url = m.nativeEvent.data;
-    //
-    // var { navigate } = this.props.navigation;
-    // navigate('ChildScreen',{urlNext: url,title:'Lớp học'});
     var message = JSON.parse(m.nativeEvent.data);
     var data = message.message;
 
     if(data.type == "openScreen"){
       var { navigate } = this.props.navigation;
       this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
-    }
-    if(data == "setTitle"){
-      console.warn(data.title);
+    }else{
+      this.props.navigation.setParams({ title: data.title });
     }
   }
   static navigationOptions =
