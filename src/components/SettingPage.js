@@ -17,10 +17,15 @@ const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
   onMessage(m){
     //console.warn("RUN 2");
-    url = m.nativeEvent.data;
-    console.warn(url);
-    var { navigate } = this.props.navigation;
-    navigate('ChildScreen',{urlNext: url,title:url});
+    var message = JSON.parse(m.nativeEvent.data);
+    var data = message.message;
+
+    if(data.type == "openScreen"){
+      var { navigate } = this.props.navigation;
+      this.props.navigation.push('ChildScreen',{urlNext: data.newUrl,title:""});
+    }else{
+      this.props.navigation.setParams({ title: data.title });
+    }
   }
   static navigationOptions = ({ navigation }) => {
     //const { params = {} } = navigation.state

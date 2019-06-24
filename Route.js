@@ -19,10 +19,8 @@ import {
   createSwitchNavigator,
   createDrawerNavigator,
 } from 'react-navigation';
-import Dashboard from './src/components/PromotionComponent';
+
 import HomePage from './src/components/HomePage';
-import MyWalletComponent from './src/components/MyWalletComponent';
-import WelcomePage from './src/components/WelcomePage';
 import Splash from './src/components/Splash';
 import LoginPage from './src/components/auth/LoginPage';
 import RegisterPage from './src/components/auth/RegisterPage';
