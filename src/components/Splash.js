@@ -46,18 +46,20 @@ export default class Splash extends Component {
    * Triggered when a particular notification has been received in foreground
    * */
    this.notificationListener = firebase.notifications().onNotification((notification) => {
-       const { title, body } = notification.notification;
-       //this.showAlert(title, body);
-        this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
+       const { title,body,screen,url } = notification;
+       console.warn(notification);
+       //this.showAlert(url, body);
+        //this.props.navigation.navigate('ChildScreen',{urlNext:url,title:title});
    });
 
    /*
    * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
    * */
    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-       const { title, body } = notificationOpen.notification;
-       //this.showAlert(title, body);
-       this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
+     const { title,body,screen, url } = notificationOpen;
+    //console.warn(notification.notification);
+     //this.showAlert(title, body);
+     this.props.navigation.navigate('ChildScreen',{urlNext:String(url),title:title});
    });
 
    /*
@@ -65,9 +67,10 @@ export default class Splash extends Component {
    * */
    const notificationOpen = await firebase.notifications().getInitialNotification();
    if (notificationOpen) {
-       const { title, body } = notificationOpen.notification;
-       //this.showAlert(title, body);
-      this.props.navigation.navigate('ChildScreen',{urlNext:'https://google.com',title:'Notification'});
+      const { title,body,screen, url } = notificationOpen;
+    //console.warn(notification.notification);
+     this.showAlert(title, body);
+      //this.props.navigation.navigate('ChildScreen',{urlNext:String(url),title:title});
    }
    /*
    * Triggered for data only payload in foreground

@@ -64,30 +64,6 @@ const Feed = props=>(
     <Text>Feed</Text>
   </View>
 );
-// class ChildScreen extends Component{
-//
-//   static navigationOptions = ({ navigation }) => {
-//    const { params } = navigation.state;
-//
-//    return {
-//      title: params.title ? params.title : 'A Nested Details Screen',
-//    }
-//  };
-//   render(){
-//     const { navigation } = this.props;
-//     const urlNext = navigation.getParam('urlNext', 'https://google.com');
-//     const titleHead = navigation.getParam('titleHead',' ');
-//     return (
-//       <WebView
-//           useWebKit={false}
-//           userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
-//           source={{uri: urlNext }}
-//           style={{flex: 1}}
-//           startInLoadingState={false}
-//         />
-//     );
-//   }
-// }
 const LoginStack = createStackNavigator({
     Login : {
       screen: LoginPage,
