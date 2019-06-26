@@ -32,7 +32,7 @@ export default class SettingPage extends Component {
     return {
       headerTitle: 'Settings',
       headerRight: (
-        <Icon style={{ paddingLeft: 10 }} onPress={navigation.getParam('handleLogout')} name="refresh" size={30} />
+        <Icon style={{ paddingLeft: 10 }} color="#fff" onPress={navigation.getParam('handleLogout')} name="refresh" size={30} />
       )
     };
   };
