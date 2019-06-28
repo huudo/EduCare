@@ -256,15 +256,15 @@ const DashboardStackNavigator = createStackNavigator(
   }
 );
 
-const AppDrawerNavigator = createDrawerNavigator({
-  Dashboard: {
-    screen: DashboardStackNavigator
-  }
-});
+// const AppDrawerNavigator = createDrawerNavigator({
+//   Dashboard: {
+//     screen: DashboardStackNavigator
+//   }
+// });
 const AppSwitchNavigator = createSwitchNavigator({
   Splash: {screen: Splash},
   LoginPage: {screen: LoginStack},
-  Dashboard: {screen: AppDrawerNavigator}
+  Dashboard: {screen: DashboardStackNavigator}
 });
 
 const AppContainer =  createAppContainer(AppSwitchNavigator);
