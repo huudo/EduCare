@@ -71,6 +71,7 @@ export default class Splash extends Component {
    // Nhận thông báo khi app đang không mở
    const notificationOpen = await firebase.notifications().getInitialNotification();
    if (notificationOpen) {
+     console.warn("RUN");
     const data = notificationOpen.notification.data;
     const message = JSON.parse(data.message);
     this.props.navigation.navigate(message.screen,{urlNext:message.url,title:message.title});
