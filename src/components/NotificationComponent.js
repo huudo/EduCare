@@ -58,16 +58,47 @@ export default class NotificationComponent extends Component {
         console.warn("error gets");
       });
   };
-  openNotification(screen,url) {
-    var { navigate } = this.props.navigation;
-    navigate('ChildScreen',{urlNext:url});
+  //Update status notification to read
+  changeStatusNotification(id){
+    let serviceUrl = BASE_URL + "/notifications/setStatus";
+    fetch(serviceUrl,{
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+      body: JSON.stringify({
+        id: id
+      }),
+      credentials: "include"
+    })
+      .then((response) => response.json())
+      .then((responseJSON) => {
+        //console.warn(responseJSON);
 
+      })
+      .catch((error) => {
+        console.warn(error);
+      });
+  }
+  openNotification(screen,url,number,id) {
+    var { navigate } = this.props.navigation;
+    var dataOld = this.state.data;
+    dataOld[number].status = "read";
+    this.setState({
+      data:dataOld
+    });
+    // API change status notification to read
+    this.changeStatusNotification(id);
+    // Open notification on new screen
+    url = url+'?hybrid=mobile';
+    navigate('ChildScreen',{urlNext:url});
   }
   renderList = () => {
-  return ( this.state.data.map((u) => {
+  return ( this.state.data.map((u,i) => {
     return (
-      <TouchableOpacity key={u.id} onPress={() => this.openNotification(u.screen,u.url)} keyboardShouldPersistTaps={true}>
-           <View  style={styles.card}>
+      <TouchableOpacity  key={u.id} onPress={() => this.openNotification(u.screen,u.url,i,u.id)} keyboardShouldPersistTaps={true}>
+           <View style={(u.status == 'read')?styles.read:styles.card}>
               <View style={{ padding: 5 }}>
                  <Text style={styles.cardTitle}>{u.title}</Text>
                  <Text>{u.body }</Text>
@@ -96,6 +127,17 @@ export default class NotificationComponent extends Component {
 const styles = StyleSheet.create({
   card :{
     backgroundColor: '#fff',
+    padding: 10,
+    marginBottom:5,
+    marginLeft:0,
+    marginRight:0,
+    //borderWidth: 1,
+    // /borderRadius: 10,
+    borderColor: '#ddd',
+    borderBottomWidth: 0
+  },
+  read: {
+    backgroundColor: '#edf2fa',
     padding: 10,
     marginBottom:5,
     marginLeft:0,

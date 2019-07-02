@@ -256,13 +256,7 @@ export default class LoginPage extends Component {
             <Text style={styles.h1}>Sign In</Text>
             <Text style={styles.textColor}>Quản lý học tập và chia sẻ kiến thức</Text>
           </View>
-          <KeyboardAwareScrollView
-              automaticallyAdjustContentInsets={false}
-               keyboardShouldPersistTaps='always'
-               scrollEventThrottle={10}
-               extraHeight={250}
-               resetScrollToCoords={{x: 0, y: 0}}
-          >
+
           <View style={styles.groupInput} >
 
             <View style={styles.inputWrap}>
@@ -275,23 +269,16 @@ export default class LoginPage extends Component {
 
           <TouchableOpacity activeOpacity={.5} onPress={this._onPressLogin.bind(this)} keyboardShouldPersistTaps={true} >
             <View style={styles.button}>
-              <Text style={styles.buttonText}> Login</Text>
+              <Text style={styles.buttonText}>Login via Blacasa</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={.5}  keyboardShouldPersistTaps={true} >
-            <View style={styles.button}>
-              <Text style={styles.buttonText}> Login via Google</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity activeOpacity={.5} onPress={this._onPressDashBoard.bind(this)} keyboardShouldPersistTaps={true}>
+          <TouchableOpacity activeOpacity={.5} onPress={() =>this.props.navigation.navigate('Register')} keyboardShouldPersistTaps={true}>
             <View style={styles.button}>
               <Text style={styles.buttonText}> Sign Up</Text>
             </View>
           </TouchableOpacity>
-          </KeyboardAwareScrollView>
           <View style={styles.textGroup} >
-            <Text style={{paddingRight:20}}>Quyên mật khẩu ?</Text>
-            <Text onPress={() =>this.props.navigation.navigate('Register')} >Đăng ký</Text>
+            <Text style={{paddingRight:20}}>Sử dụng tài khoản Blacasa để đăng nhập !</Text>
           </View>
         </View>
 
@@ -360,7 +347,7 @@ const styles = StyleSheet.create({
   height:20,
   },
   button:{
-    backgroundColor:"#d73352",
+    backgroundColor:"#069d86",
     paddingVertical: 8,
     marginVertical:8,
     alignItems: "center",

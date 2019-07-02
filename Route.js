@@ -85,7 +85,7 @@ const Home = createStackNavigator({
       return {
         headerTitle: 'Trang chủ',
         headerStyle: {
-          backgroundColor: '#03afad'
+          backgroundColor: '#069d86'
         },
         headerTitleStyle: {
             textAlign: 'center',
@@ -104,7 +104,7 @@ const Class = createStackNavigator({
       return {
         headerTitle: 'Quản lý lớp học',
         headerStyle: {
-          backgroundColor: '#03afad'
+          backgroundColor: '#069d86'
         },
         headerTintColor: '#fff'
       };
@@ -118,7 +118,7 @@ const Profile = createStackNavigator({
         return {
           headerTitle: 'Khám phá',
           headerStyle: {
-            backgroundColor: '#03afad'
+            backgroundColor: '#069d86'
           },
           headerTintColor: '#fff'
         };
@@ -133,7 +133,7 @@ const NotificationStack = createStackNavigator({
       return {
         headerTitle: 'Thông báo',
         headerStyle: {
-          backgroundColor: '#03afad'
+          backgroundColor: '#069d86'
         },
         headerTintColor: '#fff'
       };
@@ -147,7 +147,7 @@ const SettingsStack = createStackNavigator({
       return {
         headerTitle: 'Cá nhân',
         headerStyle: {
-          backgroundColor: '#03afad'
+          backgroundColor: '#069d86'
         },
         headerTintColor: '#fff'
       };
@@ -226,7 +226,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
     }),
     tabBarOptions: {
       showLabel: true,
-      activeTintColor: '#03afad',
+      activeTintColor: '#069d86',
       inactiveTintColor: '#5f6063',
     },
   }
