@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Alert } from 'react-native';
+import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Platform } from 'react-native';
 import firebase from 'react-native-firebase';
 // import BadgeNumberAndroid from 'react-native-shortcut-badger';
 import type  { Notification ,NotificationOpen  } from 'react-native-firebase';
@@ -38,8 +38,8 @@ export default class Splash extends Component {
    this.createNotificationListeners(); //add this line
  }
  componentWillUnmount() {
-  //  this.notificationListener();
-   this.notificationOpenedListener();
+  	//this.notificationListener();
+   //this.notificationOpenedListener();
  }
  async createNotificationListeners() {
    /*
@@ -47,9 +47,9 @@ export default class Splash extends Component {
    * */
    // Nhận thông báo khi app đang chạy
    this.notificationListener = firebase.notifications().onNotification((notification) => {
-     const data = notificationOpen.notification.data;
-     const message = JSON.parse(data.message);
-     console.warn(message.badge);
+     // const data =znotificationOpen.notification.data;
+//      const message = JSON.parse(data.message);
+     console.warn("message.badge");
        //this.showAlert(url, body);
         //this.props.navigation.navigate('ChildScreen',{urlNext:url,title:title});
    });
@@ -58,11 +58,14 @@ export default class Splash extends Component {
    * If your app is in background, you can listen for when a notification is clicked / tapped / opened as follows:
    * */
    this.notificationOpenedListener = firebase.notifications().onNotificationOpened((notificationOpen) => {
-     const data = notificationOpen.notification.data;
-     const message = JSON.parse(data.message);
-     console.warn(message.title);
-     //this.showAlert(title, body);
-    // this.props.navigation.navigate('ChildScreen',{urlNext:String(url),title:title});
+			const data = notificationOpen.notification.data;
+			if(Platform.OS === 'ios'){
+				const message = JSON.parse(data["gcm.notification.data"]);
+				this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
+			}else{
+		    const message = JSON.parse(data.message);
+		    this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
+			}		 
    });
 
    /*
@@ -71,10 +74,14 @@ export default class Splash extends Component {
    // Nhận thông báo khi app đang không mở
    const notificationOpen = await firebase.notifications().getInitialNotification();
    if (notificationOpen) {
-     console.warn("RUN");
-    const data = notificationOpen.notification.data;
-    const message = JSON.parse(data.message);
-    this.props.navigation.navigate(message.screen,{urlNext:message.url,title:message.title});
+			const data = notificationOpen.notification.data;
+			if(Platform.OS === 'ios'){
+				const message = JSON.parse(data["gcm.notification.data"]);
+				this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
+			}else{
+		    const message = JSON.parse(data.message);
+		    this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
+			}		 
    }
    /*
    * Triggered for data only payload in foreground
