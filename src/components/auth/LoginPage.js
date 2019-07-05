@@ -12,7 +12,8 @@ import {
   ImageBackground,
   Platform
  } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Loader from "react-native-modal-loader";
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 const BASE_URL = "https://gia-su.com/api";
@@ -30,14 +31,21 @@ export default class LoginPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      isLoading: false,
       userName: '',
       password: '',
+      errors: []
     };
   }
   componentWillMount() {
 
   }
+  showLoader = () => {
+    this.setState({ isLoading: true });
+  };
+  hiddenLoader = () => {
+    this.setState({ isLoading: false });
+  };
   //1
   async checkPermission() {
     const enabled = await firebase.messaging().hasPermission();
@@ -155,6 +163,7 @@ export default class LoginPage extends Component {
       }
   }
   _loginGiasuvip(data){
+
     let serviceUrl = VIP_URL + "/login";
     fetch(serviceUrl,{
     method: "POST",
@@ -173,11 +182,12 @@ export default class LoginPage extends Component {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
-
+        this.hiddenLoader();
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })
       .catch((error) => {
+        this.hiddenLoader();
         console.warn(error);
       });
   }
@@ -186,6 +196,7 @@ export default class LoginPage extends Component {
     navigate('Dashboard');
   }
   _onPressLogin(event){
+    this.showLoader();
     let serviceUrl =  BASE_URL + "/account/login";
     let userName = this.state.userName;
     let password = this.state.password;
@@ -231,13 +242,19 @@ export default class LoginPage extends Component {
                       this._loginGiasuvip(dataLogin);
                     } catch (error) {
                       console.log('AsyncStorage error: ' + error.message);
+                      this.hiddenLoader();
                     }
                }
                else{
+                  this.hiddenLoader();
                   Alert.alert('Login failure');
                }
             }else{
-            //  console.warn(responseJSON);
+
+              this.hiddenLoader();
+              this.setState({
+                  errors: responseJSON.errors
+              });
             }
         })
         .catch((error) => {
@@ -251,6 +268,7 @@ export default class LoginPage extends Component {
       <ImageBackground source={background} style={[styles.container, styles.background]}>
 
       <View style={styles.container}>
+      <Loader loading={this.state.isLoading} color="#ff66be" />
         <View style={styles.wrapper}>
           <View style={styles.about}>
             <Text style={styles.h1}>Sign In</Text>
@@ -260,10 +278,16 @@ export default class LoginPage extends Component {
           <View style={styles.groupInput} >
 
             <View style={styles.inputWrap}>
-              <TextInput  style={styles.input} placeholder="Email or Phone" placeholderTextColor="#2b2b2b" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
+              <TextInput  style={this.state.errors['email_phone'] ? styles.inputError : styles.input} placeholder="Email or Phone" placeholderTextColor="#2b2b2b" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
+            </View>
+            <View style={this.state.errors['email_phone'] ? styles.hasError : styles.noError}>
+              <Text style={styles.errors}>{this.state.errors['email_phone'] ?this.state.errors['email_phone'] : ''}</Text>
             </View>
             <View style={styles.inputWrap}>
-              <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
+              <TextInput style={this.state.errors['name'] ? styles.inputError : styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
+            </View>
+            <View style={this.state.errors['name'] ? styles.hasError : styles.noError}>
+              <Text style={styles.errors}>{this.state.errors['name'] ?this.state.errors['name'] : ''}</Text>
             </View>
           </View>
 
@@ -327,6 +351,22 @@ const styles = StyleSheet.create({
       marginVertical: 5,
       height:36,
       backgroundColor:"transparent",
+  },
+  inputError: {
+    flex: 1,
+    paddingHorizontal: 5,
+    backgroundColor: 'rgba(0,0,0,0)',
+    borderBottomWidth: 1,
+    borderColor: 'red',
+    color: "red"
+  },
+  noError :{
+    display: 'none'
+  },
+  errors:{
+    color: "red",
+    fontSize: 11,
+    paddingLeft:5
   },
   input:{
     flex: 1,

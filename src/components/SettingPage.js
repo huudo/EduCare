@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { WebView } from 'react-native-webview';
-import { Icon } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
 var ACCESS_TOKEN = 'key_access_token';
 const BASE_URL = "https://giasuvip.vn/api"
 export default class SettingPage extends Component {
@@ -32,7 +32,7 @@ export default class SettingPage extends Component {
     return {
       headerTitle: 'Settings',
       headerRight: (
-        <Icon style={{ paddingLeft: 10 }} color="#fff" onPress={navigation.getParam('handleLogout')} name="refresh" size={30} />
+        <Icon style={{ paddingLeft: 10 }} color="#fff" onPress={navigation.getParam('handleLogout')} name="sign-out" size={25} />
       )
     };
   };

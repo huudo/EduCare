@@ -11,7 +11,10 @@ import {
   Alert
 } from 'react-native';
 import { WebView } from 'react-native-webview';
-import { Icon } from 'react-native-elements';
+import Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fearther from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {
   createStackNavigator,
   createAppContainer,
@@ -43,20 +46,6 @@ export default class Route extends React.Component{
   }
 }
 
-class ProfilePage extends Component{
-  render(){
-    return (
-      <View style={[styles.container]}>
-      <Button
-        title="Go to Details"
-        onPress={() => this.props.navigation.navigate('ChildScreen',{urlNext: 'https://google.com',title:"google"
-            }
-          )}
-      />
-      </View>
-    );
-  }
-}
 const Feed = props=>(
   <View style={[styles.container]}>
     <Text>Feed</Text>
@@ -111,21 +100,7 @@ const Class = createStackNavigator({
     }
   }
 });
-const Profile = createStackNavigator({
-    ProfilePage: {
-      screen: ProfilePage,
-      navigationOptions: ({ navigation }) => {
-        return {
-          headerTitle: 'Khám phá',
-          headerStyle: {
-            backgroundColor: '#069d86'
-          },
-          headerTintColor: '#fff'
-        };
-      }
-    }
-  }
-);
+
 const NotificationStack = createStackNavigator({
   Notification: {
     screen: NotificationPage,
@@ -159,7 +134,6 @@ const DashboardTabNavigator = createBottomTabNavigator(
   {
     Home,
     Class,
-    Profile,
     NotificationStack,
     SettingsStack
   },{
@@ -173,9 +147,6 @@ const DashboardTabNavigator = createBottomTabNavigator(
             break;
           case 'Class':
             namePage = 'Học';
-            break;
-          case 'Profile':
-            namePage = 'Khám phá';
             break;
           case 'NotificationStack':
             namePage = 'Thông báo';
@@ -194,27 +165,22 @@ const DashboardTabNavigator = createBottomTabNavigator(
         switch (routeName) {
           case 'Home':
             return (
-              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home" size={20} />
+              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="home-outline" size={25} />
             );
             break;
           case 'Class':
             return (
-                <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="book" size={20} />
+                <Fearther style={{ paddingLeft: 10 }}  color= {tintColor} name="book" size={20} />
               );
-            break;
-          case 'Profile':
-            return (
-              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="star" size={20} />
-            );
             break;
           case 'NotificationStack':
             return (
-              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="notifications" size={20} />
+              <FontAwesome style={{ paddingLeft: 10 }}  color= {tintColor} name="bell-o" size={20} />
             );
             break;
           case 'SettingsStack':
             return (
-              <Icon style={{ paddingLeft: 10 }}  color= {tintColor} name="settings" size={20} />
+              <FontAwesome style={{ paddingLeft: 10 }}  color= {tintColor} name="user-o" size={20} />
             );
             break;
           default:

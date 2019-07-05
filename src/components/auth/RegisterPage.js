@@ -11,7 +11,8 @@ import {
   Image,
   ImageBackground,
  } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Loader from "react-native-modal-loader";
 import AsyncStorage from '@react-native-community/async-storage';
 import firebase from 'react-native-firebase';
 const BASE_URL = "https://gia-su.com/api";
@@ -29,6 +30,7 @@ export default class RegisterPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       userName: '',
       email: '',
       phone: '',
@@ -39,6 +41,12 @@ export default class RegisterPage extends Component {
   componentWillMount() {
 
   }
+  showLoader = () => {
+    this.setState({ isLoading: true });
+  };
+  hiddenLoader = () => {
+    this.setState({ isLoading: false });
+  };
   //1
   async checkPermission() {
     const enabled = await firebase.messaging().hasPermission();
@@ -145,69 +153,17 @@ export default class RegisterPage extends Component {
           'access_login' : true
         };
         AsyncStorage.setItem(IS_LOGIN, JSON.stringify(isLogin));
-        console.warn(responseJSON);
+        this.hiddenLoader();
         var { navigate } = this.props.navigation;
         navigate('Dashboard');
       })
       .catch((error) => {
         console.warn(error);
+        this.hiddenLoader();
       });
   }
-  _onPressDashBoard(even){
-    var { navigate } = this.props.navigation;
-    navigate('Dashboard');
-  }
-  _onPressLogin(event){
-    let serviceUrl =  BASE_URL + "/account/login";
-    let userName = this.state.userName;
-    let password = this.state.password;
-    var access_token = '';
-    //let postData = "grant_type=password&username=" + userName + "&password=" + password;
-      fetch(serviceUrl,{
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'device':'IOS',
-        'version':'2.0'
-      },
-        body: JSON.stringify({
-            email_phone: userName,
-            pass: password,
-          }),
-      credentials: "same-origin"
-      })
-        .then((response) => response.json())
-        .then((responseJSON) => {
-            if(responseJSON.status && responseJSON.status == 'success'){
-              var { navigate } = this.props.navigation;
-              var id_blacasa = responseJSON.data.uid;
-              //console.warn(id_blacasa);
-              access_token = responseJSON.token;
-              let remomberToken = {
-                'access_token' : access_token
-              };
-               if(access_token !=undefined){
-                  try {
-                      AsyncStorage.setItem(TOKEN_BLACASA, JSON.stringify(remomberToken));
-                      this._loginGiasuvip(id_blacasa);
-
-                    } catch (error) {
-                      console.log('AsyncStorage error: ' + error.message);
-                    }
-               }
-               else{
-                  Alert.alert('Login failure');
-               }
-            }else{
-              Alert.alert('Login failure');
-            }
-        })
-        .catch((error) => {
-          console.warn(error);
-        });
-  }
   _onRegister(event){
+    this.showLoader();
     let serviceUrl =  BASE_URL + "/account/register";
     let full_name = this.state.userName;
     let email = this.state.email;
@@ -262,19 +218,22 @@ export default class RegisterPage extends Component {
 
                     } catch (error) {
                       console.log('AsyncStorage error: ' + error.message);
+                      this.hiddenLoader();
                     }
                }
                else{
+                  this.hiddenLoader();
                   Alert.alert('Login failure');
                }
             }else{
+              this.hiddenLoader();
               this.setState({
                   errors: responseJSON.errors
               });
-              console.warn(this.state.errors['email']);
             }
         })
         .catch((error) => {
+          this.hiddenLoader();
           console.warn(error);
         });
   }
@@ -284,6 +243,7 @@ export default class RegisterPage extends Component {
       <ImageBackground source={background} style={[styles.container, styles.background]}>
 
       <View style={styles.container}>
+      <Loader loading={this.state.isLoading} color="#ff66be" />
         <View style={styles.wrapper}>
           <View style={styles.about}>
             <Text style={styles.h1}>Register</Text>
@@ -299,7 +259,10 @@ export default class RegisterPage extends Component {
           <View style={styles.groupInput} >
 
             <View style={styles.inputWrap}>
-              <TextInput  style={styles.input} placeholder="Họ tên" placeholderTextColor="#2b2b2b" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
+              <TextInput  style={this.state.errors['full_name'] ? styles.inputError : styles.input} placeholder="Họ tên" placeholderTextColor="#2b2b2b" onChangeText={(userName) => this.setState({userName})} underlineColorAndroid="transparent"/>
+            </View>
+            <View style={this.state.errors['full_name'] ? styles.hasError : styles.noError}>
+              <Text style={styles.errors}>{this.state.errors['full_name'] ?this.state.errors['full_name'] : ''}</Text>
             </View>
             <View style={styles.inputWrap}>
               <TextInput  style={this.state.errors['email'] ? styles.inputError : styles.input} placeholder="Email không bắt buộc" placeholderTextColor="#2b2b2b" onChangeText={(email) => this.setState({email})} underlineColorAndroid="transparent"/>
@@ -308,10 +271,16 @@ export default class RegisterPage extends Component {
               <Text style={styles.errors}>{this.state.errors['email'] ?this.state.errors['email'] : ''}</Text>
             </View>
             <View style={styles.inputWrap}>
-              <TextInput  style={styles.input} placeholder="Số điện thoại" placeholderTextColor="#2b2b2b" onChangeText={(phone) => this.setState({phone})} underlineColorAndroid="transparent"/>
+              <TextInput  style={this.state.errors['phone_number'] ? styles.inputError : styles.input} placeholder="Số điện thoại" placeholderTextColor="#2b2b2b" onChangeText={(phone) => this.setState({phone})} underlineColorAndroid="transparent"/>
+            </View>
+            <View style={this.state.errors['phone_number'] ? styles.hasError : styles.noError}>
+              <Text style={styles.errors}>{this.state.errors['phone_number'] ?this.state.errors['phone_number'] : ''}</Text>
             </View>
             <View style={styles.inputWrap}>
-              <TextInput style={styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
+              <TextInput style={this.state.errors['pass'] ? styles.inputError : styles.input} placeholder="Password" placeholderTextColor="#2b2b2b" secureTextEntry={true}  onChangeText={(password) => this.setState({password})} underlineColorAndroid="transparent"/>
+            </View>
+            <View style={this.state.errors['pass'] ? styles.hasError : styles.noError}>
+              <Text style={styles.errors}>{this.state.errors['pass'] ?this.state.errors['pass'] : ''}</Text>
             </View>
           </View>
 
