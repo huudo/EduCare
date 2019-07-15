@@ -1,16 +1,64 @@
 import React, { Component } from 'react';
-import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Platform } from 'react-native';
+import { Text, View, Image,Button,StyleSheet,ScrollView,ImageBackground,Platform,Alert,Linking} from 'react-native';
 import firebase from 'react-native-firebase';
 // import BadgeNumberAndroid from 'react-native-shortcut-badger';
 import type  { Notification ,NotificationOpen  } from 'react-native-firebase';
 import AsyncStorage from '@react-native-community/async-storage';
+const VIP_URL = "https://giasuvip.vn/api";
 const background =  require('./../../images/1_Loading.jpg') ;
+const version = "1.0.32";
 export default class Splash extends Component {
   constructor(props) {
     super(props);
   }
 
   componentWillMount() {
+  // Kiểm tra version
+  let serviceUrl = VIP_URL + "/checkVersion";
+  var device = "";
+  var link = "";
+  if(Platform.OS === 'ios'){
+    device = "IOS";
+    link = "itms://itunes.apple.com/us/app/blacasa-gia-sư/id1426179500?ls=1";
+  }else{
+    device = "Android";
+    link = "market://details?id=giasu.blacasa.vn";
+  }
+  fetch(serviceUrl,{
+  method: "POST",
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  },
+    body: JSON.stringify({
+        version: version,
+        device: device
+      }),
+    credentials: "include"
+  })
+  .then((response) => response.json())
+  .then((responseJSON) => {
+    //console.warn(responseJSON.status);
+    let status = responseJSON.status;
+    if(status == "success"){
+      this.loadingScreen();
+    }else{
+      this.showAlert("Cập nhật phần mềm","Đã có phiên bản mới, cập nhật ngay !",link);
+    }
+  })
+  .catch((error) => {
+    console.warn(error);
+  });
+
+ }
+ async componentDidMount() {
+   this.createNotificationListeners(); //add this line
+ }
+ componentWillUnmount() {
+  	//this.notificationListener();
+   //this.notificationOpenedListener();
+ }
+ loadingScreen(){
    var pageUrl='LoginPage';
    // Kiểm tra xem đã login chưa
    AsyncStorage.getItem('is_login').then((value) => {
@@ -33,13 +81,6 @@ export default class Splash extends Component {
      setTimeout(() => {
        navigate (pageUrl, null);
      }, 1000);
- }
- async componentDidMount() {
-   this.createNotificationListeners(); //add this line
- }
- componentWillUnmount() {
-  	//this.notificationListener();
-   //this.notificationOpenedListener();
  }
  async createNotificationListeners() {
    /*
@@ -65,7 +106,7 @@ export default class Splash extends Component {
 			}else{
 		    const message = JSON.parse(data.message);
 		    this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
-			}		 
+			}
    });
 
    /*
@@ -81,7 +122,7 @@ export default class Splash extends Component {
 			}else{
 		    const message = JSON.parse(data.message);
 		    this.props.navigation.navigate(message.screen,{urlNext:message.url+'?hybrid=mobile',title:message.title});
-			}		 
+			}
    }
    /*
    * Triggered for data only payload in foreground
@@ -91,11 +132,11 @@ export default class Splash extends Component {
      console.warn(JSON.stringify(message));
    });
  }
- showAlert(title, body) {
+ showAlert(title, body,link) {
    Alert.alert(
      title, body,
      [
-         { text: 'OK', onPress: () => this.props.navigation.navigate('ChildScreen') },
+         { text: 'Cập nhật', onPress: () => Linking.openURL(link) },
      ],
      { cancelable: false },
    );

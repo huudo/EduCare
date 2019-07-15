@@ -15,6 +15,7 @@ import Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
 import Fearther from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import IconBadge from 'react-native-icon-badge';
 import {
   createStackNavigator,
   createAppContainer,
@@ -35,6 +36,12 @@ var ACCESS_TOKEN = 'key_access_token';
 
 var access_token = '';
 export default class Route extends React.Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      badgeNumber: 1
+    }
+  }
   componentWillMount(){
 
   }
@@ -152,7 +159,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
             namePage = 'Thông báo';
             break;
           case 'SettingsStack':
-            namePage = 'Cài đặt';
+            namePage = 'Cá nhân';
             break;
           default:
             namePage = 'Page'
@@ -161,6 +168,7 @@ const DashboardTabNavigator = createBottomTabNavigator(
         return <Text style={{textAlign:'center',fontSize:10,paddingBottom:5,color: tintColor }}>{namePage}</Text>;
       },
       tabBarIcon: ({ focused, horizontal, tintColor }) => {
+        //var badge =  null;
         const { routeName } = navigation.state;
         switch (routeName) {
           case 'Home':
@@ -176,6 +184,25 @@ const DashboardTabNavigator = createBottomTabNavigator(
           case 'NotificationStack':
             return (
               <FontAwesome style={{ paddingLeft: 10 }}  color= {tintColor} name="bell-o" size={20} />
+              // <IconBadge
+              //   MainElement={<FontAwesome style={{ paddingLeft: 10 }}  color= {tintColor} name="bell-o" size={20} />}
+              //   BadgeElement={<Text style={{ color: 'white' }}>{badge}</Text>}
+              //   Hidden={navigation.unreadMessagesCount === 0}
+              //   IconBadgeStyle={
+              //     {
+              //       position:'absolute',
+              //       top:-5,
+              //       left:20,
+              //       width:20,
+              //       height:20,
+              //       borderRadius:15,
+              //       alignItems: 'center',
+              //       justifyContent: 'center',
+              //       backgroundColor: '#FF0000'
+              //     }
+              //   }
+              // />
+
             );
             break;
           case 'SettingsStack':

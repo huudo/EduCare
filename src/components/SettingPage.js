@@ -13,8 +13,14 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { WebView } from 'react-native-webview';
 import Icon from 'react-native-vector-icons/FontAwesome';
 var ACCESS_TOKEN = 'key_access_token';
-const BASE_URL = "https://giasuvip.vn/api"
+const BASE_URL = "https://giasuvip.vn/api";
+const WEBVIEW_REF = 'webview';
 export default class SettingPage extends Component {
+  constructor(props) {
+    super(props);
+    this.webView = null;
+    this.reloadWeb = 0;
+  }
   onMessage(m){
     //console.warn("RUN 2");
     var message = JSON.parse(m.nativeEvent.data);
@@ -38,6 +44,21 @@ export default class SettingPage extends Component {
   };
   componentWillMount () {
     this.props.navigation.setParams({ handleLogout: this._onPressLogout })
+  }
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      // The screen is focused
+      if(this.reloadWeb > 0){
+        this.refs[WEBVIEW_REF].reload();
+      }
+      this.reloadWeb++;
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
   }
   _onPressLogout = ()=>{
 
@@ -97,13 +118,9 @@ export default class SettingPage extends Component {
           userAgent="Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36"
           source={{uri: 'https://giasuvip.vn/profile?hybrid=mobile'}}
           style={{flex: 1}}
-          startInLoadingState={false}
-          //onShouldStartLoadWithRequest = {this.navigationStateChangedHandler}
-          //onNavigationStateChange={this.navigationStateChangedHandler}
-          onMessage={m => this.onMessage(m)}
-          ref={c => {
-            this.WebView = c;
-          }}
+          ref={WEBVIEW_REF}
+          renderLoading={this.ActivityIndicatorLoadingView}
+          startInLoadingState={true}
       />
     );
   }
