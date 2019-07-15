@@ -28,6 +28,18 @@ export default class NotificationComponent extends Component {
   componentWillMount() {
     this.getListOfNotifications();
   };
+  componentDidMount() {
+    const { navigation } = this.props;
+    this.focusListener = navigation.addListener("didFocus", () => {
+      // The screen is focused
+      this._onRefresh();
+    });
+  }
+
+  componentWillUnmount() {
+    // Remove the event listener
+    this.focusListener.remove();
+  }
   _onRefresh = () => {
     this.setState({refreshing: true});
     this.getListOfNotifications();
