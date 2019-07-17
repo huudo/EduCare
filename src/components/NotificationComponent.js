@@ -96,7 +96,7 @@ export default class NotificationComponent extends Component {
   openNotification(screen,url,number,id) {
     var { navigate } = this.props.navigation;
     var dataOld = this.state.data;
-    dataOld[number].status = "read";
+    dataOld[number].status = "Read";
     this.setState({
       data:dataOld
     });
